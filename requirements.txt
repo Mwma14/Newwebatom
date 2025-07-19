@@ -8,3 +8,8 @@ aiosqlite
 colorlog
 flask
 python-telegram-bot
+aiosqlite
+colorlog
+flask
+python-telegram-bot
+telegram
