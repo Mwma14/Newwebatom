@@ -58,7 +58,7 @@
                 </div>
                 <div class="package-actions">
                     <button class="btn-purchase kbz" onclick="purchaseCredits(1000, 'KBZ Pay')">
-                        <i class="fab fa-cc-visa"></i>
+                        <i class="fas fa-mobile-alt"></i>
                         <span>Buy with KBZ Pay</span>
                     </button>
                     <button class="btn-purchase wave" onclick="purchaseCredits(1000, 'Wave Money')">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="package-actions">
                     <button class="btn-purchase kbz" onclick="purchaseCredits(3000, 'KBZ Pay')">
-                        <i class="fab fa-cc-visa"></i>
+                        <i class="fas fa-mobile-alt"></i>
                         <span>Buy with KBZ Pay</span>
                     </button>
                     <button class="btn-purchase wave" onclick="purchaseCredits(3000, 'Wave Money')">
@@ -132,7 +132,7 @@
                 </div>
                 <div class="package-actions">
                     <button class="btn-purchase kbz" onclick="purchaseCredits(5000, 'KBZ Pay')">
-                        <i class="fab fa-cc-visa"></i>
+                        <i class="fas fa-mobile-alt"></i>
                         <span>Buy with KBZ Pay</span>
                     </button>
                     <button class="btn-purchase wave" onclick="purchaseCredits(5000, 'Wave Money')">
@@ -164,7 +164,7 @@
                 </div>
                 <div class="custom-actions">
                     <button class="btn-purchase kbz custom" onclick="purchaseCustom('KBZ Pay')">
-                        <i class="fab fa-cc-visa"></i>
+                        <i class="fas fa-mobile-alt"></i>
                         <span>Buy with KBZ Pay</span>
                     </button>
                     <button class="btn-purchase wave custom" onclick="purchaseCustom('Wave Money')">
@@ -1234,33 +1234,45 @@ document.addEventListener('keydown', function(e) {
 
 // Copy functionality
 function copyPaymentNumber(number) {
-    navigator.clipboard.writeText(number).then(() => {
-        showAlert('✅ Payment number copied to clipboard!', 'success');
-    }).catch(() => {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = number;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        showAlert('✅ Payment number copied to clipboard!', 'success');
-    });
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(number).then(() => {
+            showAlert('success', 'Payment number copied to clipboard!');
+        }).catch(() => {
+            fallbackCopy(number);
+        });
+    } else {
+        fallbackCopy(number);
+    }
 }
 
 function copyAmount(amount) {
-    navigator.clipboard.writeText(amount.toString()).then(() => {
-        showAlert('✅ Amount copied to clipboard!', 'success');
-    }).catch(() => {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = amount.toString();
-        document.body.appendChild(textArea);
-        textArea.select();
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(amount.toString()).then(() => {
+            showAlert('success', 'Amount copied to clipboard!');
+        }).catch(() => {
+            fallbackCopy(amount.toString());
+        });
+    } else {
+        fallbackCopy(amount.toString());
+    }
+}
+
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
         document.execCommand('copy');
-        document.body.removeChild(textArea);
-        showAlert('✅ Amount copied to clipboard!', 'success');
-    });
+        showAlert('success', 'Copied to clipboard!');
+    } catch (err) {
+        showAlert('error', 'Failed to copy. Please copy manually.');
+    }
+    document.body.removeChild(textArea);
 }
 
 // Add slideInRight and slideOutRight animations
