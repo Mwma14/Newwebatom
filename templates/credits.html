@@ -680,14 +680,31 @@ function purchaseCustom(paymentMethod) {
 function showPaymentModal(data) {
     document.getElementById('payment-amount').textContent = data.price_mmk + ' MMK';
     document.getElementById('payment-method').textContent = data.payment_method;
-    document.getElementById('payment-reference').textContent = data.reference_id;
+    document.getElementById('payment-reference').textContent = data.order_id;
     
     const instructions = document.getElementById('payment-instructions');
     instructions.innerHTML = `
+        <div class="credit-info" style="background: var(--bg-tertiary); border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid var(--accent-green);">
+            <h4 style="color: var(--accent-green); margin: 0 0 8px 0;">
+                <i class="fas fa-coins"></i> You will receive: ${data.credit_amount} Credits
+            </h4>
+            <p style="margin: 0; color: var(--text-secondary);">
+                Rate: 1 MMK = 0.01 Credits
+            </p>
+        </div>
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i>
+            <i class="fas fa-mobile-alt"></i>
             <strong>Payment Instructions:</strong><br>
-            ${data.instructions}
+            1. Send <strong>${data.price_mmk.toLocaleString()} MMK</strong> to <strong>${data.payment_number}</strong> using ${data.payment_method}<br>
+            2. Take a screenshot of your payment confirmation<br>
+            3. Upload the screenshot using the button below<br>
+            4. Your account will be credited after verification
+        </div>
+        <div class="upload-section" style="margin-top: 20px;">
+            <input type="file" id="screenshot-upload" accept="image/*" style="display: none;" onchange="uploadScreenshot('${data.order_id}')">
+            <button onclick="document.getElementById('screenshot-upload').click()" class="btn btn-success w-full">
+                <i class="fas fa-upload"></i> Upload Payment Screenshot
+            </button>
         </div>
     `;
     
@@ -713,5 +730,50 @@ document.addEventListener('keydown', function(e) {
         closePaymentModal();
     }
 });
+
+function uploadScreenshot(orderId) {
+    const fileInput = document.getElementById('screenshot-upload');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select a screenshot first');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('screenshot', file);
+    formData.append('order_id', orderId);
+    
+    // Show loading state
+    const uploadBtn = event.target.closest('button');
+    const originalText = uploadBtn.innerHTML;
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    uploadBtn.disabled = true;
+    
+    fetch('/upload_payment_screenshot', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        uploadBtn.innerHTML = originalText;
+        uploadBtn.disabled = false;
+        
+        if (data.success) {
+            alert('✅ Screenshot uploaded successfully! Your payment is being reviewed.');
+            closePaymentModal();
+            // Refresh balance
+            location.reload();
+        } else {
+            alert('❌ Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        uploadBtn.innerHTML = originalText;
+        uploadBtn.disabled = false;
+        console.error('Error:', error);
+        alert('❌ Upload failed. Please try again.');
+    });
+}
 </script>
 {% endblock %}

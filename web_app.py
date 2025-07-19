@@ -199,7 +199,8 @@ def purchase_credits():
             'credit_amount': credit_amount,
             'price_mmk': price_mmk,
             'payment_method': payment_method,
-            'payment_number': payment_number
+            'payment_number': payment_number,
+            'instructions': f"Send {price_mmk:,} MMK to {payment_number} using {payment_method}. You will receive {credit_amount:.2f} credits after verification."
         })
 
     except Exception as e:
@@ -442,21 +443,16 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/api/balance')
-async def get_balance():
+def get_balance():
     """API endpoint to get current user balance"""
     if 'user_id' not in session:
         return jsonify({'success': False, 'error': 'Not authenticated'}), 401
     
     try:
-        user_data = await get_user_by_id(session['user_id'])
+        user_data = run_async(db.get_user_data(session['user_id']))
         if user_data:
             # Update session with fresh data
-            session['user_data'] = {
-                'credits': user_data['credits'],
-                'telegram_username': user_data.get('telegram_username', ''),
-                'first_name': user_data.get('first_name', ''),
-                'last_name': user_data.get('last_name', '')
-            }
+            session['user_data'] = user_data
             return jsonify({
                 'success': True, 
                 'balance': user_data['credits'] or 0
@@ -464,7 +460,7 @@ async def get_balance():
         else:
             return jsonify({'success': False, 'error': 'User not found'}), 404
     except Exception as e:
-        print(f"Error getting balance: {e}")
+        logger.error(f"Error getting balance: {e}")
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
 @app.route('/admin')

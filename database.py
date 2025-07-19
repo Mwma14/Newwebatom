@@ -91,7 +91,7 @@ async def get_product_by_id(product_id: str):
     return await _db_query("SELECT product_id, operator, category, name, price_mmk, extra_info FROM products WHERE product_id = ?", (product_id,), fetchone=True)
 
 async def get_bnum_by_id(bnum_id: str):
-    return await _db_query("SELECT bnum_id, phone_number, price_mmk, operator FROM beautiful_numbers WHERE bnum_id = ? AND is_active = 1", (bnum_id,), fetchone=True)
+    return await _db_query("SELECT id, phone_number, price_mmk, operator FROM beautiful_numbers WHERE id = ? AND is_active = 1", (bnum_id,), fetchone=True)
 
 async def get_beautiful_numbers(operator: str):
     return await _db_query("SELECT id, phone_number, price_mmk FROM beautiful_numbers WHERE operator = ? AND is_active = 1", (operator,), fetchall=True)
