@@ -5,11 +5,25 @@
 
 {% block content %}
 <div class="dashboard-page">
+    <!-- Contact Info Header -->
+    <div class="contact-header">
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fab fa-telegram"></i>
+                <span>Admin: <a href="https://t.me/CEO_METAVERSE" target="_blank">@CEO_METAVERSE</a></span>
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-viber"></i>
+                <span>Viber: <a href="viber://chat?number=09883249943">09883249943</a></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Dashboard Header -->
     <div class="dashboard-header">
         <div class="welcome-section">
             <h1 class="welcome-title">
-                Welcome back, <span class="gradient-text">Trader</span>
+                Welcome back, <span class="gradient-text">{{ session.user_data.username or session.user_id }}</span>
             </h1>
             <p class="welcome-subtitle">
                 Manage your account and track your performance
@@ -203,15 +217,15 @@
                     </div>
                 </a>
 
-                <button class="action-item" onclick="contactSupport()">
+                <a href="https://t.me/CEO_METAVERSE" target="_blank" class="action-item">
                     <div class="action-icon">
                         <i class="fas fa-headset"></i>
                     </div>
                     <div class="action-content">
                         <div class="action-title">Support</div>
-                        <div class="action-desc">Get help now</div>
+                        <div class="action-desc">Contact @CEO_METAVERSE</div>
                     </div>
-                </button>
+                </a>
             </div>
         </div>
 
@@ -264,6 +278,45 @@
 .dashboard-page {
     max-width: 1400px;
     margin: 0 auto;
+}
+
+/* Contact Header */
+.contact-header {
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 0;
+    margin-bottom: 20px;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.contact-item i {
+    color: var(--accent-yellow);
+    font-size: 16px;
+}
+
+.contact-item a {
+    color: var(--accent-yellow);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-item a:hover {
+    color: var(--accent-yellow-dark);
+    text-decoration: underline;
 }
 
 .dashboard-header {
@@ -648,6 +701,15 @@
 }
 
 @media (max-width: 768px) {
+    .contact-info {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .contact-item {
+        font-size: 13px;
+    }
+
     .dashboard-header {
         flex-direction: column;
         gap: 24px;
@@ -703,10 +765,7 @@ async function refreshBalance() {
     }
 }
 
-// Contact support function
-function contactSupport() {
-    createAlert('📞 Support team will contact you shortly!', 'info');
-}
+// Contact support function (removed - now using direct Telegram link)
 
 // Auto-refresh balance every 30 seconds
 setInterval(async () => {

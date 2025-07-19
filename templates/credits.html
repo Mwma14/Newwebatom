@@ -548,13 +548,14 @@
 }
 
 .btn-purchase.wave {
-    background: var(--gradient-success);
-    color: white;
+    background: linear-gradient(135deg, #F1C40F, #F39C12);
+    color: #000;
     box-shadow: var(--shadow-md);
+    font-weight: 700;
 }
 
 .btn-purchase.wave:hover:not(:disabled) {
-    background: var(--success-green-dark);
+    background: linear-gradient(135deg, #E6B800, #E67E22);
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
@@ -1051,8 +1052,30 @@ function showPaymentModal(data) {
             <h4 style="color: var(--text-primary); margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-list-ol"></i> Payment Instructions
             </h4>
+            
+            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 16px; border: 2px solid var(--accent-yellow);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="color: var(--text-secondary); font-weight: 600;">Payment Number:</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span id="payment-number-display" style="font-family: monospace; font-size: 16px; font-weight: 700; color: var(--accent-yellow);">${data.payment_number}</span>
+                        <button onclick="copyPaymentNumber('${data.payment_number}')" style="background: var(--accent-yellow); color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="color: var(--text-secondary); font-weight: 600;">Amount:</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span id="payment-amount-display" style="font-family: monospace; font-size: 16px; font-weight: 700; color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</span>
+                        <button onclick="copyAmount('${data.price_mmk}')" style="background: var(--success-green); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <ol style="margin: 0; padding-left: 20px; color: var(--text-secondary); line-height: 1.6;">
-                <li style="margin-bottom: 8px;">Send <strong style="color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</strong> to <strong style="color: var(--primary-blue);">${data.payment_number}</strong> using ${data.payment_method}</li>
+                <li style="margin-bottom: 8px;">Send the exact amount <strong style="color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</strong> to the number above using <strong style="color: var(--primary-blue);">${data.payment_method}</strong></li>
                 <li style="margin-bottom: 8px;">Take a screenshot of your payment confirmation</li>
                 <li style="margin-bottom: 8px;">Upload the screenshot using the button below</li>
                 <li>Your account will be credited after verification (usually within 5 minutes)</li>
@@ -1208,6 +1231,37 @@ document.addEventListener('keydown', function(e) {
         closePaymentModal();
     }
 });
+
+// Copy functionality
+function copyPaymentNumber(number) {
+    navigator.clipboard.writeText(number).then(() => {
+        showAlert('✅ Payment number copied to clipboard!', 'success');
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = number;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showAlert('✅ Payment number copied to clipboard!', 'success');
+    });
+}
+
+function copyAmount(amount) {
+    navigator.clipboard.writeText(amount.toString()).then(() => {
+        showAlert('✅ Amount copied to clipboard!', 'success');
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = amount.toString();
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showAlert('✅ Amount copied to clipboard!', 'success');
+    });
+}
 
 // Add slideInRight and slideOutRight animations
 const style = document.createElement('style');

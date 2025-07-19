@@ -41,21 +41,30 @@ def login():
 
     if request.method == 'POST':
         user_id = request.form.get('user_id')
+
         if not user_id:
             return render_template('login.html', error='Please enter your Telegram User ID')
+
         try:
             user_id = int(user_id)
-            user_data = run_async(db.get_user_data(user_id))
-            if user_data['credits'] == 0 and not user_data['is_banned']:
-                run_async(db.change_user_credits(user_id, 0))
+        except ValueError:
+            return render_template('login.html', error='Invalid User ID format')
+
+        # Check if user exists in database
+        user_data = run_async(db.get_user_data(user_id))
+
+        if user_data:
             session['user_id'] = user_id
             session['user_data'] = user_data
+
+            # Try to fetch username from database if available
+            if 'username' not in user_data or not user_data['username']:
+                # If no username stored, use user_id as fallback
+                session['user_data']['username'] = user_data.get('username', str(user_id))
+
             return redirect(url_for('dashboard'))
-        except ValueError:
-            return render_template('login.html', error='Please enter a valid numeric User ID')
-        except Exception as e:
-            logger.error(f"Login error for user {user_id}: {e}")
-            return render_template('login.html', error='Login failed. Please check your User ID.')
+        else:
+            return render_template('login.html', error='User not found. Please start the bot first.')
 
     return render_template('login.html')
 
@@ -447,7 +456,7 @@ def get_balance():
     """API endpoint to get current user balance"""
     if 'user_id' not in session:
         return jsonify({'success': False, 'error': 'Not authenticated'}), 401
-    
+
     try:
         user_data = run_async(db.get_user_data(session['user_id']))
         if user_data:
