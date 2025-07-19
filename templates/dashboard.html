@@ -771,24 +771,22 @@ async function refreshBalance() {
 setInterval(async () => {
     try {
         const response = await fetch('/api/balance');
-        if (response.ok) {
-            const data = await response.json();
+        const data = await response.json();
+        
+        if (data.success) {
+            const currentBalanceEl = document.getElementById('current-balance');
+            const creditsBadge = document.querySelector('.credits-badge');
             
-            if (data.success) {
-                const currentBalanceEl = document.getElementById('current-balance');
-                const creditsBadge = document.querySelector('.credits-badge');
-                
-                if (currentBalanceEl) {
-                    currentBalanceEl.textContent = data.balance;
-                }
-                
-                if (creditsBadge) {
-                    creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
-                }
+            if (currentBalanceEl) {
+                currentBalanceEl.textContent = data.balance;
+            }
+            
+            if (creditsBadge) {
+                creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
             }
         }
     } catch (error) {
-        // Silently handle auto-refresh errors to avoid console spam
+        console.error('Auto-refresh failed:', error);
     }
 }, 30000);
 </script>
