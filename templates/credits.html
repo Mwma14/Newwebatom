@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Buy Credits - AtomBot Pro{% endblock %}
@@ -489,80 +488,24 @@
 
 /* Package Features */
 .package-features {
-    margin-bottom: 32px;
+    margin-bottom: 20px;
 }
 
 .feature {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 8px;
     color: var(--text-secondary);
     font-weight: 500;
-}
-
-.feature i {
-    color: var(--success-green);
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Package Actions */
 .package-actions {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-}
-
-.btn-purchase {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 16px 24px;
-    border: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: var(--transition);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-purchase:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-purchase.kbz {
-    background: var(--gradient-primary);
-    color: white;
-    box-shadow: var(--shadow-md);
-}
-
-.btn-purchase.kbz:hover:not(:disabled) {
-    background: var(--primary-blue-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-purchase.wave {
-    background: linear-gradient(135deg, #F1C40F, #F39C12);
-    color: #000;
-    box-shadow: var(--shadow-md);
-    font-weight: 700;
-}
-
-.btn-purchase.wave:hover:not(:disabled) {
-    background: linear-gradient(135deg, #E6B800, #E67E22);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-purchase.custom {
-    padding: 18px 32px;
-    font-size: 16px;
+    gap: 8px;
 }
 
 /* Custom Section */
@@ -1022,7 +965,7 @@ function purchaseCredits(priceMMK, paymentMethod) {
 
 function purchaseCustom(paymentMethod) {
     const amount = parseInt(document.getElementById('custom-amount').value);
-    
+
     if (!amount || amount < 1000) {
         showAlert('warning', 'Please enter a valid amount (minimum 1,000 MMK)');
         return;
@@ -1035,7 +978,7 @@ function showPaymentModal(data) {
     document.getElementById('payment-amount').textContent = data.price_mmk.toLocaleString() + ' MMK';
     document.getElementById('payment-method').textContent = data.payment_method;
     document.getElementById('payment-reference').textContent = data.order_id;
-    
+
     const instructions = document.getElementById('payment-instructions');
     instructions.innerHTML = `
         <div class="credit-preview" style="background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
@@ -1047,12 +990,12 @@ function showPaymentModal(data) {
                 Exchange Rate: 1 MMK = 0.01 Credits
             </p>
         </div>
-        
+
         <div class="payment-steps" style="background: var(--bg-tertiary); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
             <h4 style="color: var(--text-primary); margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-list-ol"></i> Payment Instructions
             </h4>
-            
+
             <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 16px; border: 2px solid var(--accent-yellow);">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <span style="color: var(--text-secondary); font-weight: 600;">Payment Number:</span>
@@ -1073,7 +1016,7 @@ function showPaymentModal(data) {
                     </div>
                 </div>
             </div>
-            
+
             <ol style="margin: 0; padding-left: 20px; color: var(--text-secondary); line-height: 1.6;">
                 <li style="margin-bottom: 8px;">Send the exact amount <strong style="color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</strong> to the number above using <strong style="color: var(--primary-blue);">${data.payment_method}</strong></li>
                 <li style="margin-bottom: 8px;">Take a screenshot of your payment confirmation</li>
@@ -1081,10 +1024,10 @@ function showPaymentModal(data) {
                 <li>Your account will be credited after verification (usually within 5 minutes)</li>
             </ol>
         </div>
-        
+
         <div class="upload-section" style="text-align: center;">
             <input type="file" id="screenshot-upload-${data.order_id}" accept="image/*" style="display: none;" onchange="handleFileSelection('${data.order_id}')">
-            
+
             <div id="file-preview-${data.order_id}" style="display: none; margin-bottom: 16px; padding: 16px; background: var(--bg-primary); border: 2px dashed var(--border-color); border-radius: 12px;">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
                     <i class="fas fa-image" style="color: var(--success-green); font-size: 24px;"></i>
@@ -1094,19 +1037,19 @@ function showPaymentModal(data) {
                     <i class="fas fa-times"></i> Remove
                 </button>
             </div>
-            
+
             <button id="select-file-btn-${data.order_id}" onclick="document.getElementById('screenshot-upload-${data.order_id}').click()" class="btn-purchase wave" style="width: 100%; margin-bottom: 12px; justify-content: center;">
                 <i class="fas fa-camera"></i> 
                 <span>Select Payment Screenshot</span>
             </button>
-            
+
             <button id="upload-btn-${data.order_id}" onclick="uploadScreenshot('${data.order_id}')" class="btn-purchase kbz" style="display: none; width: 100%; justify-content: center;">
                 <i class="fas fa-upload"></i> 
                 <span>Submit Payment Screenshot</span>
             </button>
         </div>
     `;
-    
+
     document.getElementById('paymentModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
@@ -1123,7 +1066,7 @@ function handleFileSelection(orderId) {
     const fileName = document.getElementById(`file-name-${orderId}`);
     const selectBtn = document.getElementById(`select-file-btn-${orderId}`);
     const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
-    
+
     if (file) {
         fileName.textContent = file.name;
         preview.style.display = 'block';
@@ -1137,7 +1080,7 @@ function clearFileSelection(orderId) {
     const preview = document.getElementById(`file-preview-${orderId}`);
     const selectBtn = document.getElementById(`select-file-btn-${orderId}`);
     const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
-    
+
     fileInput.value = '';
     preview.style.display = 'none';
     selectBtn.style.display = 'flex';
@@ -1147,21 +1090,21 @@ function clearFileSelection(orderId) {
 function uploadScreenshot(orderId) {
     const fileInput = document.getElementById(`screenshot-upload-${orderId}`);
     const file = fileInput.files[0];
-    
+
     if (!file) {
         showAlert('warning', 'Please select a screenshot first');
         return;
     }
-    
+
     const formData = new FormData();
     formData.append('screenshot', file);
     formData.append('order_id', orderId);
-    
+
     const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
     const originalText = uploadBtn.innerHTML;
     uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Uploading...</span>';
     uploadBtn.disabled = true;
-    
+
     fetch('/upload_payment_screenshot', {
         method: 'POST',
         body: formData
@@ -1170,7 +1113,7 @@ function uploadScreenshot(orderId) {
     .then(data => {
         uploadBtn.innerHTML = originalText;
         uploadBtn.disabled = false;
-        
+
         if (data.success) {
             showAlert('success', 'Screenshot uploaded successfully! Your payment is being reviewed.');
             closePaymentModal();
@@ -1204,7 +1147,7 @@ function showAlert(type, message) {
         box-shadow: var(--shadow-lg);
         animation: slideInRight 0.3s ease;
     `;
-    
+
     if (type === 'success') {
         alert.style.background = 'linear-gradient(135deg, #059669, #10b981)';
         alert.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i>${message}`;
@@ -1215,9 +1158,9 @@ function showAlert(type, message) {
         alert.style.background = 'linear-gradient(135deg, #d97706, #f59e0b)';
         alert.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>${message}`;
     }
-    
+
     document.body.appendChild(alert);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         alert.style.animation = 'slideOutRight 0.3s ease';
@@ -1235,7 +1178,7 @@ document.addEventListener('keydown', function(e) {
 // Copy functionality
 function copyPaymentNumber(number) {
     navigator.clipboard.writeText(number).then(() => {
-        showAlert('✅ Payment number copied to clipboard!', 'success');
+        showAlert('Payment number copied to clipboard!', 'success');
     }).catch(() => {
         // Fallback for older browsers
         const textArea = document.createElement('textarea');
@@ -1244,13 +1187,13 @@ function copyPaymentNumber(number) {
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        showAlert('✅ Payment number copied to clipboard!', 'success');
+        showAlert('Payment number copied to clipboard!', 'success');
     });
 }
 
 function copyAmount(amount) {
     navigator.clipboard.writeText(amount.toString()).then(() => {
-        showAlert('✅ Amount copied to clipboard!', 'success');
+        showAlert('Amount copied to clipboard!', 'success');
     }).catch(() => {
         // Fallback for older browsers
         const textArea = document.createElement('textarea');
@@ -1259,7 +1202,7 @@ function copyAmount(amount) {
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        showAlert('✅ Amount copied to clipboard!', 'success');
+        showAlert('Amount copied to clipboard!', 'success');
     });
 }
 
@@ -1276,7 +1219,7 @@ style.textContent = `
             transform: translateX(0);
         }
     }
-    
+
     @keyframes slideOutRight {
         from {
             opacity: 1;
