@@ -1,0 +1,330 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Orders - Atom Bot{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-list"></i> Order History</h2>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+
+<!-- Order Summary -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center bg-info text-white">
+            <div class="card-body">
+                <h4>{{ pending_orders|length }}</h4>
+                <p>Pending Orders</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-success text-white">
+            <div class="card-body">
+                <h4>{{ completed_orders|length }}</h4>
+                <p>Completed Orders</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-warning text-white">
+            <div class="card-body">
+                <h4>{{ "%.2f"|format(user_data.credits) }}</h4>
+                <p>Current Credits</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-primary text-white">
+            <div class="card-body">
+                <h4>{{ (pending_orders|length + completed_orders|length) }}</h4>
+                <p>Total Orders</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Orders -->
+{% if pending_orders %}
+<div class="card mb-4" id="pendingOrdersCard" style="display: none;">
+    <div class="card-header">
+        <h5><i class="fas fa-clock text-warning"></i> Pending Orders ({{ pending_orders|length }})</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Type</th>
+                        <th>Package/Product</th>
+                        <th>Cost</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in pending_orders %}
+                    <tr>
+                        <td><code>{{ order.id }}</code></td>
+                        <td>
+                            {% if order.type == 'Credit Purchase' %}
+                                <span class="badge bg-warning"><i class="fas fa-coins"></i> Credit</span>
+                            {% else %}
+                                <span class="badge bg-info"><i class="fas fa-box"></i> Product</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ order.package }}</td>
+                        <td>{{ "%.2f"|format(order.cost) }} C</td>
+                        <td>
+                            <span class="badge bg-warning">
+                                <i class="fas fa-hourglass-half"></i> {{ order.status }}
+                            </span>
+                        </td>
+                        <td>{{ order.date }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-info" onclick="trackOrder('{{ order.id }}')">
+                                <i class="fas fa-search"></i> Track
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Completed Orders -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5><i class="fas fa-history text-success"></i> Order History ({{ completed_orders|length }})</h5>
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary active filter-btn" onclick="filterOrders('all')">All History</button>
+            <button type="button" class="btn btn-outline-warning filter-btn" onclick="showPendingOrders()">Pending ({{ pending_orders|length }})</button>
+            <button type="button" class="btn btn-outline-success filter-btn" onclick="filterOrders('completed')">Completed</button>
+            <button type="button" class="btn btn-outline-danger filter-btn" onclick="filterOrders('rejected')">Rejected</button>
+            <button type="button" class="btn btn-outline-info filter-btn" onclick="filterOrders('credit')">Credits</button>
+            <button type="button" class="btn btn-outline-secondary filter-btn" onclick="filterOrders('product')">Products</button>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if completed_orders %}
+        <!-- Desktop Table View -->
+        <div class="d-none d-md-block">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Type</th>
+                            <th>Package/Product</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        {% for order in completed_orders %}
+                        <tr class="order-row" 
+                            data-status="{{ order.status.lower() }}" 
+                            data-type="{{ 'credit' if order.type == 'Credit Purchase' else 'product' }}">
+                            <td><code>{{ order.id }}</code></td>
+                            <td>
+                                {% if order.type == 'Credit Purchase' %}
+                                    <span class="badge bg-warning"><i class="fas fa-coins"></i> Credit</span>
+                                {% else %}
+                                    <span class="badge bg-info"><i class="fas fa-box"></i> Product</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.package }}</td>
+                            <td>{{ "%.2f"|format(order.cost) }} C</td>
+                            <td>
+                                {% if order.status == 'Completed' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check"></i> {{ order.status }}
+                                    </span>
+                                {% elif order.status == 'Rejected' %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times"></i> {{ order.status }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ order.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.date }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetails('{{ order.id }}')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-block d-md-none">
+            {% for order in completed_orders %}
+            <div class="card mb-3 order-row" 
+                 data-status="{{ order.status.lower() }}" 
+                 data-type="{{ 'credit' if order.type == 'Credit Purchase' else 'product' }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="card-title mb-1">
+                                {% if order.type == 'Credit Purchase' %}
+                                    <span class="badge bg-warning me-2"><i class="fas fa-coins"></i> Credit</span>
+                                {% else %}
+                                    <span class="badge bg-info me-2"><i class="fas fa-box"></i> Product</span>
+                                {% endif %}
+                                <code style="font-size: 12px;">{{ order.id }}</code>
+                            </h6>
+                            <p class="card-text mb-1" style="font-size: 14px;">{{ order.package }}</p>
+                            <small class="text-muted">{{ order.date }}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="mb-2">
+                                {% if order.status == 'Completed' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check"></i> {{ order.status }}
+                                    </span>
+                                {% elif order.status == 'Rejected' %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times"></i> {{ order.status }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ order.status }}</span>
+                                {% endif %}
+                            </div>
+                            <div><strong>{{ "%.2f"|format(order.cost) }} C</strong></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary w-100" onclick="viewOrderDetails('{{ order.id }}')">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center text-muted">
+            <i class="fas fa-history fa-3x mb-3"></i>
+            <p>No completed orders yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if not pending_orders and not completed_orders %}
+<div class="text-center">
+    <div class="card">
+        <div class="card-body">
+            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+            <h4>No Orders Yet</h4>
+            <p>You haven't placed any orders yet. Start shopping or buy credits to see your order history!</p>
+            <div class="d-flex justify-content-center gap-2">
+                <a href="{{ url_for('shop') }}" class="btn btn-primary">
+                    <i class="fas fa-shopping-cart"></i> Start Shopping
+                </a>
+                <a href="{{ url_for('credits') }}" class="btn btn-warning">
+                    <i class="fas fa-coins"></i> Buy Credits
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function filterOrders(type) {
+    const rows = document.querySelectorAll('.order-row');
+    const buttons = document.querySelectorAll('.filter-btn');
+    const pendingCard = document.getElementById('pendingOrdersCard');
+    
+    // Hide pending orders card
+    if (pendingCard) {
+        pendingCard.style.display = 'none';
+    }
+    
+    // Reset button states
+    buttons.forEach(btn => {
+        btn.classList.remove('active', 'btn-primary', 'btn-warning', 'btn-success', 'btn-danger', 'btn-info', 'btn-secondary');
+        btn.classList.add('btn-outline-primary');
+    });
+    
+    rows.forEach(row => {
+        if (type === 'all') {
+            row.style.display = '';
+        } else if (type === 'completed' && row.dataset.status === 'completed') {
+            row.style.display = '';
+        } else if (type === 'rejected' && row.dataset.status === 'rejected') {
+            row.style.display = '';
+        } else if (type === 'credit' && row.dataset.type === 'credit') {
+            row.style.display = '';
+        } else if (type === 'product' && row.dataset.type === 'product') {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Activate clicked button with proper styling
+    const activeBtn = event.target;
+    activeBtn.classList.remove('btn-outline-primary');
+    if (type === 'all') {
+        activeBtn.classList.add('btn-primary', 'active');
+    } else if (type === 'completed') {
+        activeBtn.classList.add('btn-success', 'active');
+    } else if (type === 'rejected') {
+        activeBtn.classList.add('btn-danger', 'active');
+    } else if (type === 'credit') {
+        activeBtn.classList.add('btn-info', 'active');
+    } else if (type === 'product') {
+        activeBtn.classList.add('btn-secondary', 'active');
+    }
+}
+
+function showPendingOrders() {
+    const pendingCard = document.getElementById('pendingOrdersCard');
+    const completedRows = document.querySelectorAll('.order-row');
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    // Hide completed order rows
+    completedRows.forEach(row => {
+        row.style.display = 'none';
+    });
+    
+    // Show pending orders card
+    if (pendingCard) {
+        pendingCard.style.display = 'block';
+    }
+    
+    // Reset button states
+    buttons.forEach(btn => {
+        btn.classList.remove('active', 'btn-primary', 'btn-warning', 'btn-success', 'btn-danger', 'btn-info', 'btn-secondary');
+        btn.classList.add('btn-outline-primary');
+    });
+    
+    // Activate pending button
+    event.target.classList.remove('btn-outline-primary');
+    event.target.classList.add('btn-warning', 'active');
+}</script>
+
+function trackOrder(orderId) {
+    alert(`Tracking order ${orderId}\n\nStatus: Pending approval\nEstimated processing time: 1-24 hours\n\nFor immediate assistance, contact admin via Telegram.`);
+}
+
+function viewOrderDetails(orderId) {
+    alert(`Order Details: ${orderId}\n\nFor detailed information and delivery status, please contact our admin via Telegram bot.`);
+}
+</script>
+{% endblock %}

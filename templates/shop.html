@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}Marketplace - AtomBot Pro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">
+            <i class="fas fa-store"></i>
+            Marketplace
+        </h1>
+        <div class="credits-badge">
+            Balance: {{ user_data.credits or 0 }} Credits
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <div>
+            <strong>How it works:</strong>
+            <br>1. Browse products by operator and skill level
+            <br>2. Purchase with your credits
+            <br>3. Provide phone number for delivery
+            <br>4. Receive your product after verification
+        </div>
+    </div>
+</div>
+
+<!-- Operator Filter -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-filter"></i>
+            Filter Products
+        </h2>
+    </div>
+
+    <div class="grid grid-2">
+        <div class="form-group">
+            <label for="operator-filter" class="form-label">
+                <i class="fas fa-signal"></i>
+                Network Operator
+            </label>
+            <select id="operator-filter" class="form-control form-select" onchange="filterProducts()">
+                <option value="">All Operators</option>
+                {% for operator in organized_products.keys() %}
+                <option value="{{ operator }}">{{ operator }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="skill-filter" class="form-label">
+                <i class="fas fa-star"></i>
+                Skill Level
+            </label>
+            <select id="skill-filter" class="form-control form-select" onchange="filterProducts()">
+                <option value="">All Levels</option>
+                <option value="Beginner">💚 Beginner (1 Credit)</option>
+                <option value="Advanced">💛 Advanced (2-3 Credits)</option>
+                <option value="Expert">🧡 Expert (4-5 Credits)</option>
+                <option value="Professional">❤️ Professional (6+ Credits)</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Products Grid -->
+{% for operator, categories in organized_products.items() %}
+<div class="operator-section" data-operator="{{ operator }}">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title gradient-text">
+                <i class="fas fa-signal"></i>
+                {{ operator }} Products
+            </h2>
+        </div>
+
+        {% for category, data in categories.items() %}
+        <div class="category-section" style="margin-bottom: 32px;">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px; padding-left: 8px; border-left: 3px solid var(--accent-yellow);">
+                <i class="fas fa-tag"></i>
+                {{ category }}
+            </h3>
+
+            {% if data.type == 'bnum' %}
+            <!-- Beautiful Numbers -->
+            <div class="grid grid-4">
+                {% for product in data.products %}
+                <div class="product-card" data-operator="{{ operator }}" data-skill="Professional">
+                    <div class="product-name">{{ product[1] }}</div>
+                    <div class="product-price">{{ (product[2] * config.CREDIT_PER_MMK) | round(2) }} Credits</div>
+                    <div class="product-category">Beautiful Number</div>
+                    <div style="margin-top: 16px;">
+                        <button onclick="purchaseProduct('{{ product[0] }}', 'bnum', '{{ product[1] }}', {{ (product[2] * config.CREDIT_PER_MMK) | round(2) }})" class="btn btn-primary w-full">
+                            <i class="fas fa-shopping-cart"></i>
+                            Purchase
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- Regular Products by Skill Level -->
+            {% for skill_level, products in data.products.items() %}
+            {% if products %}
+            <div class="skill-section" style="margin-bottom: 24px;" data-skill="{{ skill_level }}">
+                <h4 style="color: var(--text-secondary); margin-bottom: 16px; font-size: 16px;">
+                    {% if skill_level == 'Beginner' %}
+                    💚 Beginner Level
+                    {% elif skill_level == 'Advanced' %}
+                    💛 Advanced Level
+                    {% elif skill_level == 'Expert' %}
+                    🧡 Expert Level
+                    {% else %}
+                    ❤️ Professional Level
+                    {% endif %}
+                </h4>
+
+                <div class="grid grid-3">
+                    {% for product in products %}
+                    <div class="product-card" data-operator="{{ operator }}" data-skill="{{ skill_level }}">
+                        <div class="product-name">{{ product.name }}</div>
+                        <div class="product-price">{{ product.credits }} Credits</div>
+                        <div class="product-category">{{ product.price }} MMK</div>
+                        {% if product.extra %}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                            {{ product.extra }}
+                        </div>
+                        {% endif %}
+                        <div style="margin-top: 16px; display: flex; gap: 8px;">
+                            <button onclick="showProductDetails('{{ product.id }}', '{{ product.name }}', {{ product.credits }}, '{{ category }}', '{{ product.extra or '' }}')" class="btn btn-secondary" style="flex: 1;">
+                                <i class="fas fa-info-circle"></i>
+                                Details
+                            </button>
+                            <button onclick="purchaseProduct('{{ product.id }}', 'product', '{{ product.name }}', {{ product.credits }})" class="btn btn-primary" style="flex: 1;">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+<!-- Product Details Modal -->
+<div id="product-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 20px;">
+    <div style="max-width: 500px; margin: 50px auto; background: var(--bg-secondary); border-radius: 16px; padding: 32px; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h3 id="modal-title" style="margin: 0; color: var(--text-primary);"></h3>
+            <button onclick="closeModal()" style="background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="modal-content" style="margin-bottom: 24px;"></div>
+
+        <div style="display: flex; gap: 16px;">
+            <button onclick="closeModal()" class="btn btn-secondary" style="flex: 1;">
+                Cancel
+            </button>
+            <button id="modal-buy-btn" class="btn btn-primary" style="flex: 1;">
+                <i class="fas fa-shopping-cart"></i>
+                Purchase
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterProducts() {
+    const operatorFilter = document.getElementById('operator-filter').value;
+    const skillFilter = document.getElementById('skill-filter').value;
+
+    // Show/hide operator sections
+    document.querySelectorAll('.operator-section').forEach(section => {
+        const operator = section.getAttribute('data-operator');
+        if (operatorFilter === '' || operator === operatorFilter) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    });
+
+    // Show/hide skill sections
+    document.querySelectorAll('.skill-section').forEach(section => {
+        const skill = section.getAttribute('data-skill');
+        if (skillFilter === '' || skill === skillFilter) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    });
+}
+
+function showProductDetails(productId, name, credits, category, extra) {
+    document.getElementById('modal-title').textContent = name;
+    document.getElementById('modal-content').innerHTML = `
+        <div class="card" style="background: var(--bg-tertiary); padding: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span>Price:</span>
+                <span style="color: var(--accent-green); font-weight: bold;">${credits} Credits</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span>Category:</span>
+                <span style="font-weight: bold;">${category}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span>Product ID:</span>
+                <span style="font-family: monospace;">#${productId}</span>
+            </div>
+            ${extra ? `<div style="margin-top: 16px;"><strong>Details:</strong><br>${extra}</div>` : ''}
+        </div>
+    `;
+
+    document.getElementById('modal-buy-btn').onclick = () => {
+        closeModal();
+        purchaseProduct(productId, 'product', name, credits);
+    };
+
+    document.getElementById('product-modal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('product-modal').style.display = 'none';
+}
+
+function purchaseProduct(productId, type, name, credits) {
+    const userCredits = {{ user_data.credits or 0 }};
+
+    if (userCredits < credits) {
+        alert(`Insufficient credits! You need ${credits} credits but only have ${userCredits}.\\n\\nPlease buy more credits first.`);
+        window.location.href = '/credits';
+        return;
+    }
+
+    const phoneNumber = prompt(`Purchase "${name}" for ${credits} credits?\\n\\nPlease enter your phone number for delivery:`);
+
+    if (phoneNumber === null) {
+        return; // User cancelled
+    }
+
+    if (!phoneNumber.trim()) {
+        alert('Phone number is required for product delivery!');
+        return;
+    }
+
+    // Myanmar phone number validation - accept formats like 09123456789, 9123456789, +959123456789
+    const cleanPhone = phoneNumber.replace(/[\s\-\+]/g, ''); // Remove spaces, dashes, plus
+    const myanmarPattern = /^(09|9|959)\d{7,9}$/; // Myanmar phone patterns
+
+    if (!myanmarPattern.test(cleanPhone)) {
+        alert('📱 Please enter a valid Myanmar phone number\n\nAccepted formats:\n• 09123456789\n• 9123456789\n• +959123456789');
+        return;
+    }
+
+    completePurchase(productId, phoneNumber.trim(), name, credits);
+}
+
+function completePurchase(productId, phoneNumber, name, credits) {
+    fetch('/purchase_product', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            phone_number: phoneNumber
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Product purchased successfully!\\n\\nOrder ID: ${data.order_id}\\nYour order is being processed.`);
+            location.reload();
+        } else {
+            if (data.show_admin) {
+                alert(`${data.error}\n\n🆘 Need Help?\n📞 Telegram: ${data.admin_telegram}\n📱 Viber: ${data.admin_viber}\n\n💡 You can buy credits from the Credits page`);
+            } else {
+                alert('❌ ' + data.error);
+            }
+        }
+    })
+    .catch(error => {
+        alert('An error occurred during purchase.');
+        console.error('Error:', error);
+    });
+}
+
+// Close modal when clicking outside
+document.getElementById('product-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

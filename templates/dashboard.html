@@ -1,0 +1,734 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AtomBot Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="welcome-section">
+            <h1 class="welcome-title">
+                Welcome back, <span class="gradient-text">Trader</span>
+            </h1>
+            <p class="welcome-subtitle">
+                Manage your account and track your performance
+            </p>
+        </div>
+        <div class="quick-actions">
+            <a href="{{ url_for('credits') }}" class="btn btn-premium">
+                <i class="fas fa-credit-card"></i> Buy Credits
+            </a>
+            <a href="{{ url_for('shop') }}" class="btn btn-secondary">
+                <i class="fas fa-store"></i> Marketplace
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats-overview">
+        <div class="stat-card primary">
+            <div class="stat-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value" id="current-balance">{{ session.user_data.credits or 0 }}</div>
+                <div class="stat-label">Credit Balance</div>
+            </div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>Live</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ total_orders or 0 }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-trend">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ pending_orders or 0 }}</div>
+                <div class="stat-label">Pending Orders</div>
+            </div>
+            <div class="stat-trend">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ completed_orders or 0 }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-trend success">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-grid">
+        <!-- Account Overview -->
+        <div class="dashboard-card account-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-user-circle"></i>
+                    Account Overview
+                </h2>
+                <div class="account-settings">
+                    <button class="btn btn-secondary btn-sm" onclick="refreshBalance()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="account-info">
+                <div class="info-item">
+                    <span class="label">User ID:</span>
+                    <span class="value">{{ session.user_id }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Account Type:</span>
+                    <span class="value">
+                        <span class="status-badge status-approved">Premium</span>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Member Since:</span>
+                    <span class="value">{{ join_date or 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Last Activity:</span>
+                    <span class="value live-clock">--:--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dashboard-card activity-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-history"></i>
+                    Recent Activity
+                </h2>
+                <a href="{{ url_for('orders') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-external-link-alt"></i> View All
+                </a>
+            </div>
+            <div class="activity-list">
+                {% if recent_orders %}
+                {% for order in recent_orders[:5] %}
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        {% if order.status == 'completed' %}
+                        <i class="fas fa-check-circle text-success"></i>
+                        {% elif order.status == 'pending' %}
+                        <i class="fas fa-clock text-warning"></i>
+                        {% else %}
+                        <i class="fas fa-times-circle text-error"></i>
+                        {% endif %}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">{{ order.product_name or 'Product Order' }}</div>
+                        <div class="activity-meta">
+                            <span class="activity-time">{{ order.created_at }}</span>
+                            <span class="activity-status status-{{ order.status }}">{{ order.status.title() }}</span>
+                        </div>
+                    </div>
+                    <div class="activity-value">{{ order.price_mmk }} MMK</div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No recent activity</p>
+                    <a href="{{ url_for('shop') }}" class="btn btn-primary btn-sm">
+                        Start Shopping
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dashboard-card actions-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h2>
+            </div>
+            <div class="quick-actions-grid">
+                <a href="{{ url_for('credits') }}" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Buy Credits</div>
+                        <div class="action-desc">Top up your account</div>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('shop') }}" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Shop Products</div>
+                        <div class="action-desc">Browse marketplace</div>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('orders') }}" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">View Orders</div>
+                        <div class="action-desc">Track your orders</div>
+                    </div>
+                </a>
+
+                <button class="action-item" onclick="contactSupport()">
+                    <div class="action-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Support</div>
+                        <div class="action-desc">Get help now</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="dashboard-card market-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    Market Overview
+                </h2>
+                <span class="status-live">Live</span>
+            </div>
+            <div class="market-stats">
+                <div class="market-item">
+                    <div class="market-name">
+                        <i class="fas fa-sim-card"></i>
+                        Mobile Packages
+                    </div>
+                    <div class="market-value">
+                        <span class="price">From 1,000 MMK</span>
+                        <span class="change positive">+5%</span>
+                    </div>
+                </div>
+                <div class="market-item">
+                    <div class="market-name">
+                        <i class="fas fa-phone"></i>
+                        Beautiful Numbers
+                    </div>
+                    <div class="market-value">
+                        <span class="price">From 5,000 MMK</span>
+                        <span class="change positive">+12%</span>
+                    </div>
+                </div>
+                <div class="market-item">
+                    <div class="market-name">
+                        <i class="fas fa-wifi"></i>
+                        Data Plans
+                    </div>
+                    <div class="market-value">
+                        <span class="price">From 500 MMK</span>
+                        <span class="change neutral">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.dashboard-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.welcome-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-yellow);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-card.primary::before {
+    background: var(--gradient);
+    transform: scaleX(1);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--accent-yellow);
+}
+
+.stat-card.primary .stat-icon {
+    background: var(--gradient);
+    color: #000;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-change,
+.stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.stat-change.positive {
+    color: var(--accent-green);
+    background: rgba(2, 192, 118, 0.1);
+}
+
+.stat-trend {
+    color: var(--text-muted);
+    background: var(--bg-tertiary);
+}
+
+.stat-trend.success {
+    color: var(--accent-green);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+.dashboard-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.info-item .label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.info-item .value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.activity-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+}
+
+.activity-time {
+    color: var(--text-muted);
+}
+
+.activity-status {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.activity-status.status-completed {
+    background: rgba(2, 192, 118, 0.1);
+    color: var(--accent-green);
+}
+
+.activity-status.status-pending {
+    background: rgba(240, 185, 11, 0.1);
+    color: var(--warning);
+}
+
+.activity-value {
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.action-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-yellow);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gradient);
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.action-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.action-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.market-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.market-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.market-item:last-child {
+    border-bottom: none;
+}
+
+.market-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.market-name i {
+    color: var(--accent-yellow);
+}
+
+.market-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.market-value .price {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.market-value .change {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.market-value .change.positive {
+    background: rgba(2, 192, 118, 0.1);
+    color: var(--accent-green);
+}
+
+.market-value .change.neutral {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+    }
+
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-title {
+        font-size: 2rem;
+    }
+}
+</style>
+
+<script>
+// Refresh balance function
+async function refreshBalance() {
+    const button = event.target;
+    const originalText = showLoading(button);
+    
+    try {
+        const response = await fetch('/api/balance', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update balance display
+            document.getElementById('current-balance').textContent = data.balance;
+            
+            // Update credits badge in header
+            const creditsBadge = document.querySelector('.credits-badge');
+            if (creditsBadge) {
+                creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
+            }
+            
+            // Show success message
+            createAlert('✅ Balance updated successfully!', 'success');
+        } else {
+            createAlert('❌ Failed to refresh balance', 'error');
+        }
+    } catch (error) {
+        console.error('Error refreshing balance:', error);
+        createAlert('❌ Network error occurred', 'error');
+    } finally {
+        hideLoading(button, originalText);
+    }
+}
+
+// Contact support function
+function contactSupport() {
+    createAlert('📞 Support team will contact you shortly!', 'info');
+}
+
+// Auto-refresh balance every 30 seconds
+setInterval(async () => {
+    try {
+        const response = await fetch('/api/balance');
+        const data = await response.json();
+        
+        if (data.success) {
+            const currentBalanceEl = document.getElementById('current-balance');
+            const creditsBadge = document.querySelector('.credits-badge');
+            
+            if (currentBalanceEl) {
+                currentBalanceEl.textContent = data.balance;
+            }
+            
+            if (creditsBadge) {
+                creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
+            }
+        }
+    } catch (error) {
+        console.error('Auto-refresh failed:', error);
+    }
+}, 30000);
+</script>
+{% endblock %}
