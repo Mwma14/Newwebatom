@@ -700,10 +700,20 @@ function showPaymentModal(data) {
             3. Upload the screenshot using the button below<br>
             4. Your account will be credited after verification
         </div>
-        <div class="upload-section" style="margin-top: 20px;">
-            <input type="file" id="screenshot-upload" accept="image/*" style="display: none;" onchange="uploadScreenshot('${data.order_id}')">
-            <button onclick="document.getElementById('screenshot-upload').click()" class="btn btn-success w-full">
-                <i class="fas fa-upload"></i> Upload Payment Screenshot
+        <div class="upload-section" style="margin-top: 20px; text-align: center;">
+            <input type="file" id="screenshot-upload-${data.order_id}" accept="image/*" style="display: none;" onchange="handleFileSelection('${data.order_id}')">
+            <div id="file-preview-${data.order_id}" style="display: none; margin-bottom: 15px; padding: 10px; background: var(--bg-tertiary); border-radius: 8px;">
+                <i class="fas fa-image" style="color: var(--accent-green);"></i>
+                <span id="file-name-${data.order_id}"></span>
+                <button onclick="clearFileSelection('${data.order_id}')" style="background: none; border: none; color: var(--text-secondary); margin-left: 10px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <button id="select-file-btn-${data.order_id}" onclick="document.getElementById('screenshot-upload-${data.order_id}').click()" class="btn btn-secondary w-full" style="margin-bottom: 10px;">
+                <i class="fas fa-camera"></i> Select Screenshot
+            </button>
+            <button id="upload-btn-${data.order_id}" onclick="uploadScreenshot('${data.order_id}')" class="btn btn-success w-full" style="display: none;">
+                <i class="fas fa-upload"></i> Submit Payment Screenshot
             </button>
         </div>
     `;
@@ -731,12 +741,40 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+function handleFileSelection(orderId) {
+    const fileInput = document.getElementById(`screenshot-upload-${orderId}`);
+    const file = fileInput.files[0];
+    const preview = document.getElementById(`file-preview-${orderId}`);
+    const fileName = document.getElementById(`file-name-${orderId}`);
+    const selectBtn = document.getElementById(`select-file-btn-${orderId}`);
+    const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
+    
+    if (file) {
+        fileName.textContent = file.name;
+        preview.style.display = 'block';
+        selectBtn.style.display = 'none';
+        uploadBtn.style.display = 'block';
+    }
+}
+
+function clearFileSelection(orderId) {
+    const fileInput = document.getElementById(`screenshot-upload-${orderId}`);
+    const preview = document.getElementById(`file-preview-${orderId}`);
+    const selectBtn = document.getElementById(`select-file-btn-${orderId}`);
+    const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
+    
+    fileInput.value = '';
+    preview.style.display = 'none';
+    selectBtn.style.display = 'block';
+    uploadBtn.style.display = 'none';
+}
+
 function uploadScreenshot(orderId) {
-    const fileInput = document.getElementById('screenshot-upload');
+    const fileInput = document.getElementById(`screenshot-upload-${orderId}`);
     const file = fileInput.files[0];
     
     if (!file) {
-        alert('Please select a screenshot first');
+        alert('⚠️ Please select a screenshot first');
         return;
     }
     
@@ -745,7 +783,7 @@ function uploadScreenshot(orderId) {
     formData.append('order_id', orderId);
     
     // Show loading state
-    const uploadBtn = event.target.closest('button');
+    const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
     const originalText = uploadBtn.innerHTML;
     uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
     uploadBtn.disabled = true;
