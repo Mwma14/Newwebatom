@@ -32,41 +32,44 @@
         <h2 class="section-title">Credit Packages</h2>
         <div class="packages-grid">
             <!-- 1000 MMK Package -->
-            <div class="package-card">
+            <div class="package-card starter">
                 <div class="package-header">
-                    <div class="package-badge">Popular</div>
-                    <h3 class="package-title">Starter</h3>
+                    <div class="package-badge">Most Popular</div>
+                    <h3 class="package-title">Starter Pack</h3>
                     <div class="package-price">
                         <span class="price">1,000</span>
                         <span class="currency">MMK</span>
                     </div>
+                    <div class="credit-amount">10 Credits</div>
                 </div>
                 <div class="package-features">
                     <div class="feature">
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle"></i>
                         <span>Instant Processing</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle"></i>
                         <span>24/7 Support</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
-                        <span>No Expiry</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>No Expiry Date</span>
                     </div>
                 </div>
                 <div class="package-actions">
-                    <button class="btn btn-primary w-full" onclick="purchaseCredits(1000, 'KBZ Pay')">
-                        <i class="fas fa-mobile-alt"></i> Buy with KBZ Pay
+                    <button class="btn-purchase kbz" onclick="purchaseCredits(1000, 'KBZ Pay')">
+                        <i class="fab fa-cc-visa"></i>
+                        <span>Buy with KBZ Pay</span>
                     </button>
-                    <button class="btn btn-secondary w-full" onclick="purchaseCredits(1000, 'Wave Money')">
-                        <i class="fas fa-wave-square"></i> Buy with Wave
+                    <button class="btn-purchase wave" onclick="purchaseCredits(1000, 'Wave Money')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Buy with Wave Money</span>
                     </button>
                 </div>
             </div>
 
             <!-- 3000 MMK Package -->
-            <div class="package-card featured">
+            <div class="package-card professional featured">
                 <div class="package-header">
                     <div class="package-badge premium">Best Value</div>
                     <h3 class="package-title">Professional</h3>
@@ -74,33 +77,36 @@
                         <span class="price">3,000</span>
                         <span class="currency">MMK</span>
                     </div>
+                    <div class="credit-amount">30 Credits</div>
                 </div>
                 <div class="package-features">
                     <div class="feature">
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle"></i>
                         <span>Priority Processing</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle"></i>
                         <span>Premium Support</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
-                        <span>Bonus Credits</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Bonus Credits Included</span>
                     </div>
                 </div>
                 <div class="package-actions">
-                    <button class="btn btn-premium w-full" onclick="purchaseCredits(3000, 'KBZ Pay')">
-                        <i class="fas fa-mobile-alt"></i> Buy with KBZ Pay
+                    <button class="btn-purchase kbz" onclick="purchaseCredits(3000, 'KBZ Pay')">
+                        <i class="fab fa-cc-visa"></i>
+                        <span>Buy with KBZ Pay</span>
                     </button>
-                    <button class="btn btn-secondary w-full" onclick="purchaseCredits(3000, 'Wave Money')">
-                        <i class="fas fa-wave-square"></i> Buy with Wave
+                    <button class="btn-purchase wave" onclick="purchaseCredits(3000, 'Wave Money')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Buy with Wave Money</span>
                     </button>
                 </div>
             </div>
 
             <!-- 5000 MMK Package -->
-            <div class="package-card">
+            <div class="package-card enterprise">
                 <div class="package-header">
                     <div class="package-badge">Enterprise</div>
                     <h3 class="package-title">Enterprise</h3>
@@ -108,27 +114,30 @@
                         <span class="price">5,000</span>
                         <span class="currency">MMK</span>
                     </div>
+                    <div class="credit-amount">50 Credits</div>
                 </div>
                 <div class="package-features">
                     <div class="feature">
-                        <i class="fas fa-check"></i>
-                        <span>Instant Processing</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Lightning Fast Processing</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
-                        <span>VIP Support</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>VIP Support Access</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-check"></i>
-                        <span>Maximum Bonus</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Maximum Bonus Credits</span>
                     </div>
                 </div>
                 <div class="package-actions">
-                    <button class="btn btn-primary w-full" onclick="purchaseCredits(5000, 'KBZ Pay')">
-                        <i class="fas fa-mobile-alt"></i> Buy with KBZ Pay
+                    <button class="btn-purchase kbz" onclick="purchaseCredits(5000, 'KBZ Pay')">
+                        <i class="fab fa-cc-visa"></i>
+                        <span>Buy with KBZ Pay</span>
                     </button>
-                    <button class="btn btn-secondary w-full" onclick="purchaseCredits(5000, 'Wave Money')">
-                        <i class="fas fa-wave-square"></i> Buy with Wave
+                    <button class="btn-purchase wave" onclick="purchaseCredits(5000, 'Wave Money')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Buy with Wave Money</span>
                     </button>
                 </div>
             </div>
@@ -137,27 +146,30 @@
 
     <!-- Custom Amount -->
     <div class="custom-section">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">
+        <div class="custom-card">
+            <div class="custom-header">
+                <h2 class="custom-title">
                     <i class="fas fa-calculator"></i>
                     Custom Amount
                 </h2>
+                <p class="custom-subtitle">Enter any amount starting from 1,000 MMK</p>
             </div>
             <div class="custom-form">
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-money-bill"></i>
-                        Amount (MMK)
-                    </label>
-                    <input type="number" id="custom-amount" class="form-control" placeholder="Enter amount (min: 1000)" min="1000" step="100">
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <label class="input-label">Amount (MMK)</label>
+                        <input type="number" id="custom-amount" class="custom-input" placeholder="Enter amount (min: 1,000)" min="1000" step="100">
+                        <div class="input-hint">Minimum: 1,000 MMK | Rate: 1 MMK = 0.01 Credits</div>
+                    </div>
                 </div>
                 <div class="custom-actions">
-                    <button class="btn btn-primary" onclick="purchaseCustom('KBZ Pay')">
-                        <i class="fas fa-mobile-alt"></i> Buy with KBZ Pay
+                    <button class="btn-purchase kbz custom" onclick="purchaseCustom('KBZ Pay')">
+                        <i class="fab fa-cc-visa"></i>
+                        <span>Buy with KBZ Pay</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="purchaseCustom('Wave Money')">
-                        <i class="fas fa-wave-square"></i> Buy with Wave
+                    <button class="btn-purchase wave custom" onclick="purchaseCustom('Wave Money')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Buy with Wave Money</span>
                     </button>
                 </div>
             </div>
@@ -166,40 +178,48 @@
 
     <!-- Payment Instructions -->
     <div class="instructions-section">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">
+        <div class="instructions-card">
+            <div class="instructions-header">
+                <h2 class="instructions-title">
                     <i class="fas fa-info-circle"></i>
-                    Payment Instructions
+                    How to Purchase Credits
                 </h2>
             </div>
-            <div class="instructions-content">
-                <div class="instruction-item">
-                    <div class="step-number">1</div>
+            <div class="instructions-grid">
+                <div class="instruction-step">
+                    <div class="step-icon">
+                        <span class="step-number">1</span>
+                    </div>
                     <div class="step-content">
                         <h3>Select Package</h3>
-                        <p>Choose your preferred credit package or enter a custom amount</p>
+                        <p>Choose your preferred credit package or enter a custom amount above</p>
                     </div>
                 </div>
-                <div class="instruction-item">
-                    <div class="step-number">2</div>
+                <div class="instruction-step">
+                    <div class="step-icon">
+                        <span class="step-number">2</span>
+                    </div>
                     <div class="step-content">
-                        <h3>Choose Payment Method</h3>
-                        <p>Select between KBZ Pay or Wave Money for secure payment</p>
+                        <h3>Choose Payment</h3>
+                        <p>Select between KBZ Pay or Wave Money for secure payment processing</p>
                     </div>
                 </div>
-                <div class="instruction-item">
-                    <div class="step-number">3</div>
+                <div class="instruction-step">
+                    <div class="step-icon">
+                        <span class="step-number">3</span>
+                    </div>
                     <div class="step-content">
                         <h3>Complete Payment</h3>
-                        <p>Follow the payment instructions and upload your screenshot</p>
+                        <p>Follow payment instructions and upload your transaction screenshot</p>
                     </div>
                 </div>
-                <div class="instruction-item">
-                    <div class="step-number">4</div>
+                <div class="instruction-step">
+                    <div class="step-icon">
+                        <span class="step-number">4</span>
+                    </div>
                     <div class="step-content">
-                        <h3>Instant Credit</h3>
-                        <p>Your account will be credited automatically after verification</p>
+                        <h3>Get Credits</h3>
+                        <p>Your account will be credited automatically after payment verification</p>
                     </div>
                 </div>
             </div>
@@ -208,8 +228,9 @@
 </div>
 
 <!-- Payment Modal -->
-<div id="paymentModal" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="paymentModal" class="payment-modal" style="display: none;">
+    <div class="modal-overlay" onclick="closePaymentModal()"></div>
+    <div class="modal-container">
         <div class="modal-header">
             <h3 class="modal-title">
                 <i class="fas fa-credit-card"></i>
@@ -220,57 +241,83 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class="payment-info">
-                <div class="payment-details">
-                    <div class="detail-item">
-                        <span class="label">Amount:</span>
-                        <span class="value" id="payment-amount">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Method:</span>
-                        <span class="value" id="payment-method">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Reference:</span>
-                        <span class="value" id="payment-reference">-</span>
-                    </div>
+            <div class="payment-summary">
+                <div class="summary-item">
+                    <span class="label">Amount:</span>
+                    <span class="value" id="payment-amount">-</span>
                 </div>
-                <div class="payment-instructions" id="payment-instructions">
-                    <!-- Payment instructions will be inserted here -->
+                <div class="summary-item">
+                    <span class="label">Payment Method:</span>
+                    <span class="value" id="payment-method">-</span>
                 </div>
+                <div class="summary-item">
+                    <span class="label">Order Reference:</span>
+                    <span class="value reference" id="payment-reference">-</span>
+                </div>
+            </div>
+            <div class="payment-instructions" id="payment-instructions">
+                <!-- Payment instructions will be inserted here -->
             </div>
         </div>
     </div>
 </div>
 
 <style>
+/* Reset and Variables */
+:root {
+    --primary-blue: #2563eb;
+    --primary-blue-dark: #1d4ed8;
+    --success-green: #059669;
+    --success-green-dark: #047857;
+    --warning-orange: #d97706;
+    --warning-orange-dark: #b45309;
+    --accent-purple: #7c3aed;
+    --accent-purple-dark: #6d28d9;
+    --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+    --gradient-success: linear-gradient(135deg, var(--success-green), #10b981);
+    --gradient-warning: linear-gradient(135deg, var(--warning-orange), #f59e0b);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --border-radius: 12px;
+    --border-radius-lg: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .credits-page {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
+/* Page Header */
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 40px 0;
+    border-bottom: 2px solid var(--border-color);
     margin-bottom: 48px;
-    padding: 32px 0;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content h1 {
     font-size: 2.5rem;
     font-weight: 800;
-    margin-bottom: 8px;
-    background: var(--gradient);
+    margin: 0 0 8px 0;
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .header-content p {
     color: var(--text-secondary);
     font-size: 1.1rem;
+    margin: 0;
 }
 
 .balance-display {
@@ -279,57 +326,68 @@
 
 .balance-card {
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 24px;
-    min-width: 200px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 24px 32px;
+    min-width: 220px;
+    box-shadow: var(--shadow-md);
 }
 
 .balance-label {
     color: var(--text-muted);
     font-size: 14px;
+    font-weight: 500;
     margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .balance-amount {
     display: flex;
     align-items: baseline;
+    justify-content: center;
     gap: 8px;
 }
 
 .balance-amount .currency {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--accent-yellow);
+    font-weight: 600;
 }
 
 .balance-amount .amount {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 800;
     color: var(--text-primary);
 }
 
+/* Section Titles */
 .section-title {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 32px;
     color: var(--text-primary);
+    text-align: center;
 }
 
+/* Package Grid */
 .packages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 32px;
     margin-bottom: 64px;
 }
 
+/* Package Cards */
 .package-card {
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 32px;
-    transition: all 0.3s ease;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 32px 24px;
+    transition: var(--transition);
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
 .package-card::before {
@@ -338,31 +396,34 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: var(--gradient);
+    height: 4px;
+    background: var(--gradient-primary);
     transform: scaleX(0);
-    transition: transform 0.3s ease;
+    transition: var(--transition);
+}
+
+.package-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-blue);
 }
 
 .package-card:hover::before {
     transform: scaleX(1);
 }
 
-.package-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-yellow);
-    box-shadow: var(--shadow-lg);
-}
-
 .package-card.featured {
-    border-color: var(--accent-yellow);
-    box-shadow: 0 0 30px rgba(252, 213, 53, 0.2);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+    transform: scale(1.05);
 }
 
 .package-card.featured::before {
     transform: scaleX(1);
+    background: var(--gradient-warning);
 }
 
+/* Package Header */
 .package-header {
     text-align: center;
     margin-bottom: 32px;
@@ -372,18 +433,21 @@
 .package-badge {
     background: var(--bg-tertiary);
     color: var(--text-secondary);
-    padding: 6px 16px;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin-bottom: 16px;
     display: inline-block;
+    border: 1px solid var(--border-color);
 }
 
 .package-badge.premium {
-    background: var(--gradient);
+    background: var(--gradient-warning);
     color: #000;
+    border-color: var(--warning-orange);
 }
 
 .package-title {
@@ -398,19 +462,32 @@
     align-items: baseline;
     justify-content: center;
     gap: 8px;
+    margin-bottom: 8px;
 }
 
 .package-price .price {
     font-size: 3rem;
     font-weight: 800;
-    color: var(--accent-green);
+    color: var(--success-green);
 }
 
 .package-price .currency {
     font-size: 1.2rem;
     color: var(--text-secondary);
+    font-weight: 600;
 }
 
+.credit-amount {
+    font-size: 1.1rem;
+    color: var(--primary-blue);
+    font-weight: 600;
+    background: rgba(37, 99, 235, 0.1);
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+/* Package Features */
 .package-features {
     margin-bottom: 32px;
 }
@@ -421,99 +498,266 @@
     gap: 12px;
     margin-bottom: 12px;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
 .feature i {
-    color: var(--accent-green);
-    font-size: 14px;
+    color: var(--success-green);
+    font-size: 16px;
 }
 
+/* Package Actions */
 .package-actions {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
+.btn-purchase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-purchase:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-purchase.kbz {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-purchase.kbz:hover:not(:disabled) {
+    background: var(--primary-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-purchase.wave {
+    background: var(--gradient-success);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-purchase.wave:hover:not(:disabled) {
+    background: var(--success-green-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-purchase.custom {
+    padding: 18px 32px;
+    font-size: 16px;
+}
+
+/* Custom Section */
 .custom-section {
     margin-bottom: 64px;
 }
 
-.custom-form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
+.custom-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-md);
 }
 
-.custom-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.instructions-section {
+.custom-header {
+    text-align: center;
     margin-bottom: 32px;
 }
 
-.instructions-content {
-    display: grid;
-    gap: 24px;
-}
-
-.instruction-item {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.step-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--gradient);
-    color: #000;
+.custom-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 12px;
+}
+
+.custom-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.custom-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 500;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    text-align: center;
+}
+
+.custom-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Instructions Section */
+.instructions-section {
+    margin-bottom: 48px;
+}
+
+.instructions-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-md);
+}
+
+.instructions-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.instructions-title {
+    font-size: 1.8rem;
     font-weight: 700;
-    flex-shrink: 0;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+}
+
+.instruction-step {
+    text-align: center;
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+}
+
+.step-number {
+    color: white;
+    font-weight: 800;
+    font-size: 24px;
 }
 
 .step-content h3 {
     font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-weight: 700;
+    margin-bottom: 12px;
     color: var(--text-primary);
 }
 
 .step-content p {
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
+    margin: 0;
 }
 
-/* Modal Styles */
-.modal {
+/* Payment Modal */
+.payment-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(11, 14, 17, 0.9);
-    backdrop-filter: blur(10px);
     z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
     animation: fadeIn 0.3s ease;
 }
 
-.modal-content {
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+}
+
+.modal-container {
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
     overflow-y: auto;
+    position: relative;
+    z-index: 10001;
+    box-shadow: var(--shadow-xl);
     animation: slideInUp 0.3s ease;
 }
 
@@ -521,8 +765,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px;
-    border-bottom: 1px solid var(--border-color);
+    padding: 24px 32px;
+    border-bottom: 2px solid var(--border-color);
+    background: var(--bg-tertiary);
 }
 
 .modal-title {
@@ -532,6 +777,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    margin: 0;
 }
 
 .modal-close {
@@ -541,8 +787,8 @@
     font-size: 20px;
     cursor: pointer;
     padding: 8px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
 }
 
 .modal-close:hover {
@@ -551,39 +797,147 @@
 }
 
 .modal-body {
-    padding: 24px;
+    padding: 32px;
 }
 
-.payment-details {
+.payment-summary {
     background: var(--bg-tertiary);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    margin-bottom: 32px;
 }
 
-.detail-item {
+.summary-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
+    padding: 12px 0;
     border-bottom: 1px solid var(--border-color);
 }
 
-.detail-item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
+.summary-item:last-child {
     border-bottom: none;
+    padding-bottom: 0;
 }
 
-.detail-item .label {
+.summary-item .label {
     color: var(--text-secondary);
     font-weight: 500;
 }
 
-.detail-item .value {
+.summary-item .value {
     color: var(--text-primary);
     font-weight: 600;
+}
+
+.summary-item .value.reference {
+    font-family: 'Monaco', 'Menlo', monospace;
+    background: var(--bg-primary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .credits-page {
+        padding: 0 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+        padding: 24px 0;
+    }
+
+    .header-content h1 {
+        font-size: 2rem;
+    }
+
+    .balance-display {
+        text-align: center;
+    }
+
+    .balance-card {
+        min-width: 200px;
+        padding: 20px 24px;
+    }
+
+    .packages-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .package-card.featured {
+        transform: none;
+    }
+
+    .custom-card {
+        padding: 24px;
+    }
+
+    .custom-actions {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .instructions-card {
+        padding: 24px;
+    }
+
+    .instructions-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .modal-container {
+        margin: 10px;
+        max-height: calc(100vh - 20px);
+    }
+
+    .modal-header {
+        padding: 20px 24px;
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .summary-item .value.reference {
+        word-break: break-all;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .package-price .price {
+        font-size: 2.5rem;
+    }
+
+    .btn-purchase {
+        padding: 14px 20px;
+        font-size: 13px;
+    }
+
+    .btn-purchase.custom {
+        padding: 16px 24px;
+        font-size: 14px;
+    }
 }
 
 /* Animations */
@@ -603,37 +957,40 @@
     }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .page-header {
-        flex-direction: column;
-        gap: 24px;
-        text-align: center;
-    }
+/* Loading State */
+.btn-purchase.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
 
-    .balance-display {
-        text-align: center;
-    }
+.btn-purchase.loading i {
+    animation: spin 1s linear infinite;
+}
 
-    .custom-form {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .custom-actions {
-        flex-direction: column;
-    }
-
-    .packages-grid {
-        grid-template-columns: 1fr;
-    }
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 </style>
 
 <script>
+function showLoading(button) {
+    const originalText = button.innerHTML;
+    button.classList.add('loading');
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner"></i> <span>Processing...</span>';
+    return originalText;
+}
+
+function hideLoading(button, originalText) {
+    button.classList.remove('loading');
+    button.disabled = false;
+    button.innerHTML = originalText;
+}
+
 function purchaseCredits(priceMMK, paymentMethod) {
     const button = event.target;
-    const originalText = button ? showLoading(button) : null;
+    const originalText = showLoading(button);
 
     fetch('/purchase_credits', {
         method: 'POST',
@@ -647,22 +1004,18 @@ function purchaseCredits(priceMMK, paymentMethod) {
     })
     .then(response => response.json())
     .then(data => {
-        if (button && originalText) {
-            hideLoading(button, originalText);
-        }
+        hideLoading(button, originalText);
 
         if (data.success) {
             showPaymentModal(data);
         } else {
-            alert('❌ Error: ' + data.error);
+            showAlert('error', data.error || 'An error occurred');
         }
     })
     .catch(error => {
-        if (button && originalText) {
-            hideLoading(button, originalText);
-        }
+        hideLoading(button, originalText);
         console.error('Error:', error);
-        alert('❌ Network error occurred');
+        showAlert('error', 'Network error occurred. Please try again.');
     });
 }
 
@@ -670,7 +1023,7 @@ function purchaseCustom(paymentMethod) {
     const amount = parseInt(document.getElementById('custom-amount').value);
     
     if (!amount || amount < 1000) {
-        alert('⚠️ Please enter a valid amount (minimum 1000 MMK)');
+        showAlert('warning', 'Please enter a valid amount (minimum 1,000 MMK)');
         return;
     }
 
@@ -678,42 +1031,55 @@ function purchaseCustom(paymentMethod) {
 }
 
 function showPaymentModal(data) {
-    document.getElementById('payment-amount').textContent = data.price_mmk + ' MMK';
+    document.getElementById('payment-amount').textContent = data.price_mmk.toLocaleString() + ' MMK';
     document.getElementById('payment-method').textContent = data.payment_method;
     document.getElementById('payment-reference').textContent = data.order_id;
     
     const instructions = document.getElementById('payment-instructions');
     instructions.innerHTML = `
-        <div class="credit-info" style="background: var(--bg-tertiary); border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid var(--accent-green);">
-            <h4 style="color: var(--accent-green); margin: 0 0 8px 0;">
-                <i class="fas fa-coins"></i> You will receive: ${data.credit_amount} Credits
+        <div class="credit-preview" style="background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
+            <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.2rem;">
+                <i class="fas fa-coins" style="margin-right: 8px;"></i> 
+                You will receive: <strong>${data.credit_amount} Credits</strong>
             </h4>
-            <p style="margin: 0; color: var(--text-secondary);">
-                Rate: 1 MMK = 0.01 Credits
+            <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">
+                Exchange Rate: 1 MMK = 0.01 Credits
             </p>
         </div>
-        <div class="alert alert-info">
-            <i class="fas fa-mobile-alt"></i>
-            <strong>Payment Instructions:</strong><br>
-            1. Send <strong>${data.price_mmk.toLocaleString()} MMK</strong> to <strong>${data.payment_number}</strong> using ${data.payment_method}<br>
-            2. Take a screenshot of your payment confirmation<br>
-            3. Upload the screenshot using the button below<br>
-            4. Your account will be credited after verification
+        
+        <div class="payment-steps" style="background: var(--bg-tertiary); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+            <h4 style="color: var(--text-primary); margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-list-ol"></i> Payment Instructions
+            </h4>
+            <ol style="margin: 0; padding-left: 20px; color: var(--text-secondary); line-height: 1.6;">
+                <li style="margin-bottom: 8px;">Send <strong style="color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</strong> to <strong style="color: var(--primary-blue);">${data.payment_number}</strong> using ${data.payment_method}</li>
+                <li style="margin-bottom: 8px;">Take a screenshot of your payment confirmation</li>
+                <li style="margin-bottom: 8px;">Upload the screenshot using the button below</li>
+                <li>Your account will be credited after verification (usually within 5 minutes)</li>
+            </ol>
         </div>
-        <div class="upload-section" style="margin-top: 20px; text-align: center;">
+        
+        <div class="upload-section" style="text-align: center;">
             <input type="file" id="screenshot-upload-${data.order_id}" accept="image/*" style="display: none;" onchange="handleFileSelection('${data.order_id}')">
-            <div id="file-preview-${data.order_id}" style="display: none; margin-bottom: 15px; padding: 10px; background: var(--bg-tertiary); border-radius: 8px;">
-                <i class="fas fa-image" style="color: var(--accent-green);"></i>
-                <span id="file-name-${data.order_id}"></span>
-                <button onclick="clearFileSelection('${data.order_id}')" style="background: none; border: none; color: var(--text-secondary); margin-left: 10px;">
-                    <i class="fas fa-times"></i>
+            
+            <div id="file-preview-${data.order_id}" style="display: none; margin-bottom: 16px; padding: 16px; background: var(--bg-primary); border: 2px dashed var(--border-color); border-radius: 12px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
+                    <i class="fas fa-image" style="color: var(--success-green); font-size: 24px;"></i>
+                    <span id="file-name-${data.order_id}" style="color: var(--text-primary); font-weight: 500;"></span>
+                </div>
+                <button onclick="clearFileSelection('${data.order_id}')" style="background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">
+                    <i class="fas fa-times"></i> Remove
                 </button>
             </div>
-            <button id="select-file-btn-${data.order_id}" onclick="document.getElementById('screenshot-upload-${data.order_id}').click()" class="btn btn-secondary w-full" style="margin-bottom: 10px;">
-                <i class="fas fa-camera"></i> Select Screenshot
+            
+            <button id="select-file-btn-${data.order_id}" onclick="document.getElementById('screenshot-upload-${data.order_id}').click()" class="btn-purchase wave" style="width: 100%; margin-bottom: 12px; justify-content: center;">
+                <i class="fas fa-camera"></i> 
+                <span>Select Payment Screenshot</span>
             </button>
-            <button id="upload-btn-${data.order_id}" onclick="uploadScreenshot('${data.order_id}')" class="btn btn-success w-full" style="display: none;">
-                <i class="fas fa-upload"></i> Submit Payment Screenshot
+            
+            <button id="upload-btn-${data.order_id}" onclick="uploadScreenshot('${data.order_id}')" class="btn-purchase kbz" style="display: none; width: 100%; justify-content: center;">
+                <i class="fas fa-upload"></i> 
+                <span>Submit Payment Screenshot</span>
             </button>
         </div>
     `;
@@ -727,20 +1093,6 @@ function closePaymentModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Close modal when clicking outside
-document.getElementById('paymentModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closePaymentModal();
-    }
-});
-
-// Escape key to close modal
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closePaymentModal();
-    }
-});
-
 function handleFileSelection(orderId) {
     const fileInput = document.getElementById(`screenshot-upload-${orderId}`);
     const file = fileInput.files[0];
@@ -753,7 +1105,7 @@ function handleFileSelection(orderId) {
         fileName.textContent = file.name;
         preview.style.display = 'block';
         selectBtn.style.display = 'none';
-        uploadBtn.style.display = 'block';
+        uploadBtn.style.display = 'flex';
     }
 }
 
@@ -765,7 +1117,7 @@ function clearFileSelection(orderId) {
     
     fileInput.value = '';
     preview.style.display = 'none';
-    selectBtn.style.display = 'block';
+    selectBtn.style.display = 'flex';
     uploadBtn.style.display = 'none';
 }
 
@@ -774,7 +1126,7 @@ function uploadScreenshot(orderId) {
     const file = fileInput.files[0];
     
     if (!file) {
-        alert('⚠️ Please select a screenshot first');
+        showAlert('warning', 'Please select a screenshot first');
         return;
     }
     
@@ -782,10 +1134,9 @@ function uploadScreenshot(orderId) {
     formData.append('screenshot', file);
     formData.append('order_id', orderId);
     
-    // Show loading state
     const uploadBtn = document.getElementById(`upload-btn-${orderId}`);
     const originalText = uploadBtn.innerHTML;
-    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Uploading...</span>';
     uploadBtn.disabled = true;
     
     fetch('/upload_payment_screenshot', {
@@ -798,20 +1149,91 @@ function uploadScreenshot(orderId) {
         uploadBtn.disabled = false;
         
         if (data.success) {
-            alert('✅ Screenshot uploaded successfully! Your payment is being reviewed.');
+            showAlert('success', 'Screenshot uploaded successfully! Your payment is being reviewed.');
             closePaymentModal();
-            // Refresh balance
-            location.reload();
+            setTimeout(() => location.reload(), 2000);
         } else {
-            alert('❌ Error: ' + data.error);
+            showAlert('error', data.error || 'Upload failed');
         }
     })
     .catch(error => {
         uploadBtn.innerHTML = originalText;
         uploadBtn.disabled = false;
         console.error('Error:', error);
-        alert('❌ Upload failed. Please try again.');
+        showAlert('error', 'Upload failed. Please try again.');
     });
 }
+
+function showAlert(type, message) {
+    // Create alert element
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    alert.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 20000;
+        padding: 16px 20px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 500;
+        max-width: 400px;
+        box-shadow: var(--shadow-lg);
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    if (type === 'success') {
+        alert.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+        alert.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i>${message}`;
+    } else if (type === 'error') {
+        alert.style.background = 'linear-gradient(135deg, #dc2626, #ef4444)';
+        alert.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>${message}`;
+    } else if (type === 'warning') {
+        alert.style.background = 'linear-gradient(135deg, #d97706, #f59e0b)';
+        alert.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>${message}`;
+    }
+    
+    document.body.appendChild(alert);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        alert.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => document.body.removeChild(alert), 300);
+    }, 5000);
+}
+
+// Close modal when clicking outside or pressing Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePaymentModal();
+    }
+});
+
+// Add slideInRight and slideOutRight animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+`;
+document.head.appendChild(style);
 </script>
 {% endblock %}
