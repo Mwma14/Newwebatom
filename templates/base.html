@@ -98,7 +98,7 @@
         .header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 12px 0;
+            padding: 8px 0;
             position: relative;
             z-index: 1000;
             backdrop-filter: blur(20px);
@@ -111,14 +111,60 @@
             justify-content: space-between;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 16px;
+            height: 56px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hamburger-menu {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .hamburger-menu:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hamburger-menu:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hamburger-menu .fa-bars,
+        .hamburger-menu .fa-times {
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu .fa-times {
+            transform: rotate(90deg);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 24px;
+            gap: 10px;
+            font-size: 20px;
             font-weight: 700;
             background: var(--gradient);
             -webkit-background-clip: text;
@@ -128,7 +174,7 @@
         }
 
         .logo i {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--accent-yellow);
             animation: pulse 2s infinite;
             filter: drop-shadow(0 0 8px rgba(252, 213, 53, 0.5));
@@ -139,66 +185,18 @@
             50% { transform: scale(1.05); }
         }
 
-        .nav-links {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--accent-yellow);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--text-primary);
-            background: var(--bg-hover);
-            transform: translateY(-1px);
-        }
-
-        .nav-links a:hover::before,
-        .nav-links a.active::before {
-            width: 80%;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 14px;
-        }
-
         .credits-badge {
             background: linear-gradient(135deg, var(--accent-green), #00B894);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             box-shadow: var(--shadow-sm);
             animation: glow 2s infinite alternate;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         @keyframes glow {
@@ -206,54 +204,128 @@
             to { box-shadow: 0 0 20px var(--accent-green), 0 0 30px var(--accent-green); }
         }
 
-        .user-id {
-            color: var(--text-muted);
-            font-size: 12px;
-            background: var(--bg-tertiary);
-            padding: 6px 12px;
-            border-radius: 12px;
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 16px;
+            right: 16px;
+            background: var(--bg-secondary);
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+            z-index: 1001;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+            overflow: hidden;
         }
 
-        /* Mobile Navigation */
-        .mobile-menu-btn {
-            display: none;
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
             background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .user-id-dropdown {
             color: var(--text-primary);
-            font-size: 18px;
-            cursor: pointer;
-            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-id-value {
+            color: var(--text-muted);
+            font-size: 12px;
+            background: var(--bg-primary);
+            padding: 4px 8px;
             border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: inline-block;
+        }
+
+        .dropdown-body {
+            padding: 12px 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            order: -1;
-            min-width: 48px;
-            height: 48px;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            border-left-color: var(--accent-yellow);
+        }
+
+        .dropdown-item.active {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+            border-left-color: var(--accent-yellow);
+        }
+
+        .dropdown-item i {
+            width: 16px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .dropdown-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-red), #E74C3C);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-sm);
+            gap: 8px;
         }
 
-        .mobile-menu-btn:hover {
-            background: var(--bg-hover);
-            border-color: var(--border-hover);
+        .logout-btn:hover {
             transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 15px rgba(246, 70, 93, 0.3);
         }
 
-        .mobile-menu-btn:active {
-            transform: translateY(0);
-            box-shadow: var(--shadow-sm);
+        /* Hide desktop navigation */
+        .nav-links {
+            display: none;
         }
 
-        .mobile-menu-btn .fa-bars,
-        .mobile-menu-btn .fa-times {
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-btn .fa-times {
-            transform: rotate(90deg);
+        .user-info {
+            display: none;
         }
 
         /* Main Content */
@@ -596,89 +668,34 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .header {
-                padding: 8px 0;
-            }
-
             .nav {
-                padding: 0 16px;
-                position: relative;
-                flex-wrap: wrap;
-                gap: 12px;
+                padding: 0 12px;
+                height: 52px;
             }
 
             .logo {
-                font-size: 20px;
-                flex: 1;
-                min-width: 120px;
+                font-size: 18px;
             }
 
             .logo i {
-                font-size: 22px;
+                font-size: 20px;
             }
 
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: calc(100% + 12px);
-                left: 16px;
-                right: 16px;
-                background: var(--bg-secondary);
-                flex-direction: column;
-                padding: 20px;
-                border-radius: 12px;
-                border: 1px solid var(--border-color);
-                box-shadow: var(--shadow-lg);
-                z-index: 1001;
-                backdrop-filter: blur(20px);
-            }
-
-            .nav-links.active {
-                display: flex;
-                animation: slideDown 0.3s ease-out;
-            }
-
-            .nav-links a {
-                padding: 16px 20px;
-                border-radius: 8px;
-                margin-bottom: 4px;
+            .hamburger-menu {
+                min-width: 40px;
+                height: 40px;
+                padding: 8px;
                 font-size: 16px;
-                border: 1px solid transparent;
-            }
-
-            .nav-links a:hover {
-                background: var(--bg-tertiary);
-                border-color: var(--border-hover);
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            .user-info {
-                width: 100%;
-                justify-content: space-between;
-                align-items: center;
-                order: 2;
-                margin-top: 8px;
-                padding-top: 12px;
-                border-top: 1px solid var(--border-color);
             }
 
             .credits-badge {
-                font-size: 12px;
-                padding: 6px 12px;
+                font-size: 11px;
+                padding: 5px 10px;
             }
 
-            .user-id {
-                font-size: 11px;
-                padding: 4px 8px;
-            }
-
-            .user-info a.btn {
-                padding: 6px 12px;
-                font-size: 11px;
-                min-width: auto;
+            .dropdown-menu {
+                left: 12px;
+                right: 12px;
             }
 
             .grid-2,
@@ -736,33 +753,33 @@
         /* Extra small screens */
         @media (max-width: 480px) {
             .nav {
-                padding: 0 12px;
+                padding: 0 8px;
+                height: 48px;
             }
 
             .logo {
-                font-size: 18px;
-            }
-
-            .logo i {
-                font-size: 20px;
-            }
-
-            .mobile-menu-btn {
-                min-width: 44px;
-                height: 44px;
-                padding: 10px;
                 font-size: 16px;
             }
 
-            .user-info {
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
+            .logo i {
+                font-size: 18px;
             }
 
-            .credits-badge,
-            .user-id {
-                text-align: center;
+            .hamburger-menu {
+                min-width: 36px;
+                height: 36px;
+                padding: 6px;
+                font-size: 14px;
+            }
+
+            .credits-badge {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+
+            .dropdown-menu {
+                left: 8px;
+                right: 8px;
             }
 
             .container {
@@ -1031,47 +1048,65 @@
 <body>
     <header class="header">
         <div class="nav">
-            <a href="{{ url_for('index') }}" class="logo">
-                <i class="fas fa-atom"></i>
-                AtomBot Pro
+            <div class="nav-left">
+                <button class="hamburger-menu" onclick="toggleDropdownMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <a href="{{ url_for('index') }}" class="logo">
+                    <i class="fas fa-atom"></i>
+                    AtomBot Pro
+                </a>
+            </div>
+            
+            {% if session.user_id %}
+            <span class="credits-badge">
+                <i class="fas fa-coins"></i>
+                {{ session.user_data.credits or 0 }}
+            </span>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fas fa-sign-in-alt"></i> Login
             </a>
+            {% endif %}
+        </div>
+        
+        {% if session.user_id %}
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-header">
+                <div class="user-info-dropdown">
+                    <span class="user-id-dropdown">User Information</span>
+                    <span class="user-id-value">ID: {{ session.user_id }}</span>
+                </div>
+            </div>
             
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <ul class="nav-links" id="navLinks">
-                <li><a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </a></li>
-                <li><a href="{{ url_for('credits') }}" class="{% if request.endpoint == 'credits' %}active{% endif %}">
-                    <i class="fas fa-coins"></i> Buy Credits
-                </a></li>
-                <li><a href="{{ url_for('shop') }}" class="{% if request.endpoint == 'shop' %}active{% endif %}">
-                    <i class="fas fa-store"></i> Marketplace
-                </a></li>
-                <li><a href="{{ url_for('orders') }}" class="{% if request.endpoint == 'orders' %}active{% endif %}">
-                    <i class="fas fa-receipt"></i> Orders
-                </a></li>
-            </ul>
-            
-            <div class="user-info">
-                {% if session.user_id %}
-                <span class="credits-badge">
+            <div class="dropdown-body">
+                <a href="{{ url_for('dashboard') }}" class="dropdown-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+                <a href="{{ url_for('credits') }}" class="dropdown-item {% if request.endpoint == 'credits' %}active{% endif %}">
                     <i class="fas fa-coins"></i>
-                    {{ session.user_data.credits or 0 }} Credits
-                </span>
-                <span class="user-id">ID: {{ session.user_id }}</span>
-                <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                    Buy Credits
                 </a>
-                {% else %}
-                <a href="{{ url_for('login') }}" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                <a href="{{ url_for('shop') }}" class="dropdown-item {% if request.endpoint == 'shop' %}active{% endif %}">
+                    <i class="fas fa-store"></i>
+                    Marketplace
                 </a>
-                {% endif %}
+                <a href="{{ url_for('orders') }}" class="dropdown-item {% if request.endpoint == 'orders' %}active{% endif %}">
+                    <i class="fas fa-receipt"></i>
+                    Orders
+                </a>
+            </div>
+            
+            <div class="dropdown-footer">
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
             </div>
         </div>
+        {% endif %}
     </header>
 
     <main class="main-content">
@@ -1112,20 +1147,20 @@
             }
         }
 
-        // Enhanced mobile menu
-        function toggleMobileMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const menuBtn = document.querySelector('.mobile-menu-btn i');
-            const isActive = navLinks.classList.contains('active');
+        // Enhanced dropdown menu
+        function toggleDropdownMenu() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const menuBtn = document.querySelector('.hamburger-menu i');
+            const isActive = dropdownMenu.classList.contains('active');
             
             if (isActive) {
-                navLinks.style.animation = 'slideUp 0.3s ease-in forwards';
+                dropdownMenu.style.animation = 'slideUp 0.3s ease-in forwards';
                 setTimeout(() => {
-                    navLinks.classList.remove('active');
-                    navLinks.style.animation = '';
+                    dropdownMenu.classList.remove('active');
+                    dropdownMenu.style.animation = '';
                 }, 250);
             } else {
-                navLinks.classList.add('active');
+                dropdownMenu.classList.add('active');
             }
             
             menuBtn.classList.toggle('fa-bars');
@@ -1137,14 +1172,14 @@
             }
         }
 
-        // Close mobile menu when clicking outside
+        // Close dropdown menu when clicking outside
         document.addEventListener('click', function(e) {
-            const nav = document.querySelector('.nav');
-            const navLinks = document.getElementById('navLinks');
-            const menuBtn = document.querySelector('.mobile-menu-btn i');
+            const header = document.querySelector('.header');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const menuBtn = document.querySelector('.hamburger-menu i');
             
-            if (!nav.contains(e.target)) {
-                navLinks.classList.remove('active');
+            if (!header.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
                 menuBtn.classList.remove('fa-times');
                 menuBtn.classList.add('fa-bars');
             }
@@ -1282,9 +1317,9 @@
         document.addEventListener('keydown', function(e) {
             // Escape key closes modals/menus
             if (e.key === 'Escape') {
-                const navLinks = document.getElementById('navLinks');
-                const menuBtn = document.querySelector('.mobile-menu-btn i');
-                navLinks.classList.remove('active');
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                const menuBtn = document.querySelector('.hamburger-menu i');
+                dropdownMenu.classList.remove('active');
                 menuBtn.classList.remove('fa-times');
                 menuBtn.classList.add('fa-bars');
             }
