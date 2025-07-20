@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Dashboard - AtomBot Pro{% endblock %}
@@ -694,7 +693,7 @@
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .quick-actions-grid {
         grid-template-columns: 1fr;
     }
@@ -731,7 +730,7 @@
 async function refreshBalance() {
     const button = event.target;
     const originalText = showLoading(button);
-    
+
     try {
         const response = await fetch('/api/balance', {
             method: 'GET',
@@ -739,19 +738,19 @@ async function refreshBalance() {
                 'Content-Type': 'application/json',
             }
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             // Update balance display
             document.getElementById('current-balance').textContent = data.balance;
-            
+
             // Update credits badge in header
             const creditsBadge = document.querySelector('.credits-badge');
             if (creditsBadge) {
                 creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
             }
-            
+
             // Show success message
             createAlert('✅ Balance updated successfully!', 'success');
         } else {
@@ -772,15 +771,15 @@ setInterval(async () => {
     try {
         const response = await fetch('/api/balance');
         const data = await response.json();
-        
+
         if (data.success) {
             const currentBalanceEl = document.getElementById('current-balance');
             const creditsBadge = document.querySelector('.credits-badge');
-            
+
             if (currentBalanceEl) {
                 currentBalanceEl.textContent = data.balance;
             }
-            
+
             if (creditsBadge) {
                 creditsBadge.innerHTML = `<i class="fas fa-coins"></i> ${data.balance} Credits`;
             }

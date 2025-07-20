@@ -41,9 +41,16 @@ def login():
 
     if request.method == 'POST':
         user_id = request.form.get('user_id')
+        password = request.form.get('password')
 
         if not user_id:
             return render_template('login.html', error='Please enter your Telegram User ID')
+        
+        if not password:
+            return render_template('login.html', error='Please enter your password')
+
+        if len(password) != 6:
+            return render_template('login.html', error='Password must be exactly 6 characters')
 
         try:
             user_id = int(user_id)
@@ -54,15 +61,18 @@ def login():
         user_data = run_async(db.get_user_data(user_id))
 
         if user_data:
-            session['user_id'] = user_id
-            session['user_data'] = user_data
-
-            # Try to fetch username from database if available
-            if 'username' not in user_data or not user_data['username']:
-                # If no username stored, use user_id as fallback
-                session['user_data']['username'] = user_data.get('username', str(user_id))
-
-            return redirect(url_for('dashboard'))
+            # If user has no password set, redirect to set password page
+            if not user_data.get('password'):
+                session['temp_user_id'] = user_id
+                return redirect(url_for('set_password'))
+            else:
+                # Verify existing password
+                if run_async(db.verify_user_password(user_id, password)):
+                    session['user_id'] = user_id
+                    session['user_data'] = user_data
+                    return redirect(url_for('dashboard'))
+                else:
+                    return render_template('login.html', error='Incorrect password')
         else:
             return render_template('login.html', error='User not found. Please start the bot first.')
 
@@ -445,6 +455,37 @@ def orders():
                          pending_orders=formatted_pending,
                          completed_orders=formatted_history,
                          user_data=user_data)
+
+@app.route('/set_password', methods=['GET', 'POST'])
+def set_password():
+    if 'temp_user_id' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if not password or not confirm_password:
+            return render_template('set_password.html', error='Please fill in all fields')
+        
+        if len(password) != 6:
+            return render_template('set_password.html', error='Password must be exactly 6 characters')
+        
+        if password != confirm_password:
+            return render_template('set_password.html', error='Passwords do not match')
+        
+        user_id = session['temp_user_id']
+        run_async(db.set_user_password(user_id, password))
+        
+        # Now log the user in
+        user_data = run_async(db.get_user_data(user_id))
+        session['user_id'] = user_id
+        session['user_data'] = user_data
+        session.pop('temp_user_id', None)
+        
+        return redirect(url_for('dashboard'))
+    
+    return render_template('set_password.html')
 
 @app.route('/logout')
 def logout():

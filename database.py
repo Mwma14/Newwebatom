@@ -11,11 +11,12 @@ async def setup_database():
     try:
         with sqlite3.connect(DB_NAME) as conn:
             cursor = conn.cursor()
-            cursor.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY, credits REAL DEFAULT 0, language TEXT DEFAULT 'en', is_banned INTEGER DEFAULT 0)")
+            cursor.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY, credits REAL DEFAULT 0, language TEXT DEFAULT 'en', is_banned INTEGER DEFAULT 0, password TEXT)")
             cursor.execute("PRAGMA table_info(users)")
             columns = [c[1] for c in cursor.fetchall()]
             if 'language' not in columns: cursor.execute("ALTER TABLE users ADD COLUMN language TEXT DEFAULT 'en'")
             if 'is_banned' not in columns: cursor.execute("ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0")
+            if 'password' not in columns: cursor.execute("ALTER TABLE users ADD COLUMN password TEXT")
             cursor.execute("CREATE TABLE IF NOT EXISTS orders (order_id TEXT PRIMARY KEY, user_id INTEGER, order_type TEXT, package_name TEXT, credit_cost REAL, payment_method TEXT, status TEXT, screenshot_file_id TEXT, delivery_info TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
             cursor.execute("CREATE TABLE IF NOT EXISTS products (product_id TEXT PRIMARY KEY, operator TEXT NOT NULL, category TEXT NOT NULL, name TEXT NOT NULL, price_mmk INTEGER NOT NULL, extra_info TEXT, is_active INTEGER DEFAULT 1)")
             cursor.execute("CREATE TABLE IF NOT EXISTS beautiful_numbers (id INTEGER PRIMARY KEY AUTOINCREMENT, operator TEXT NOT NULL, phone_number TEXT NOT NULL UNIQUE, price_mmk INTEGER NOT NULL, is_active INTEGER DEFAULT 1)")
@@ -44,8 +45,15 @@ async def _db_query(query, params=(), fetchone=False, fetchall=False, commit=Fal
 
 async def get_user_data(user_id: int) -> dict:
     await _db_query("INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,), commit=True)
-    user_data = await _db_query("SELECT credits, language, is_banned FROM users WHERE user_id = ?", (user_id,), fetchone=True)
-    return {'credits': user_data[0], 'language': user_data[1], 'is_banned': bool(user_data[2])} if user_data else {'credits': 0.0, 'language': 'en', 'is_banned': False}
+    user_data = await _db_query("SELECT credits, language, is_banned, password FROM users WHERE user_id = ?", (user_id,), fetchone=True)
+    return {'credits': user_data[0], 'language': user_data[1], 'is_banned': bool(user_data[2]), 'password': user_data[3]} if user_data else {'credits': 0.0, 'language': 'en', 'is_banned': False, 'password': None}
+
+async def set_user_password(user_id: int, password: str):
+    return await _db_query("UPDATE users SET password = ? WHERE user_id = ?", (password, user_id), commit=True)
+
+async def verify_user_password(user_id: int, password: str):
+    user_data = await _db_query("SELECT password FROM users WHERE user_id = ?", (user_id,), fetchone=True)
+    return user_data and user_data[0] == password
 
 async def set_user_language(user_id: int, lang_code: str):
     return await _db_query("UPDATE users SET language = ? WHERE user_id = ?", (lang_code, user_id), commit=True)

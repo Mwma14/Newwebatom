@@ -153,11 +153,24 @@
 
         .hamburger-menu .fa-bars,
         .hamburger-menu .fa-times {
-            transition: all 0.3s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hamburger-menu .fa-times {
             transform: rotate(90deg);
+        }
+
+        /* Button loading state consistency */
+        .btn-loading {
+            min-width: fit-content;
+            width: auto;
+        }
+
+        .btn-loading .spinner-professional {
+            width: 16px;
+            height: 16px;
+            border-width: 2px;
+            margin-right: 8px;
         }
 
         .logo {
@@ -1062,7 +1075,7 @@
             {% if session.user_id %}
             <span class="credits-badge">
                 <i class="fas fa-coins"></i>
-                {{ session.user_data.credits or 0 }}
+                C{{ session.user_data.credits or 0 }}
             </span>
             {% else %}
             <a href="{{ url_for('login') }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
@@ -1153,22 +1166,23 @@
             const menuBtn = document.querySelector('.hamburger-menu i');
             const isActive = dropdownMenu.classList.contains('active');
             
+            // Immediate icon change for responsiveness
+            menuBtn.classList.toggle('fa-bars');
+            menuBtn.classList.toggle('fa-times');
+            
             if (isActive) {
-                dropdownMenu.style.animation = 'slideUp 0.3s ease-in forwards';
+                dropdownMenu.style.animation = 'slideUp 0.2s ease-in forwards';
                 setTimeout(() => {
                     dropdownMenu.classList.remove('active');
                     dropdownMenu.style.animation = '';
-                }, 250);
+                }, 180);
             } else {
                 dropdownMenu.classList.add('active');
             }
             
-            menuBtn.classList.toggle('fa-bars');
-            menuBtn.classList.toggle('fa-times');
-            
             // Add haptic feedback on mobile
             if (navigator.vibrate) {
-                navigator.vibrate(50);
+                navigator.vibrate(30);
             }
         }
 
@@ -1222,10 +1236,19 @@
         // Enhanced loading states
         function showLoading(button) {
             const originalText = button.innerHTML;
+            const originalWidth = button.offsetWidth;
+            button.style.minWidth = originalWidth + 'px';
             button.innerHTML = '<span class="spinner-professional"></span> Processing...';
             button.disabled = true;
             button.classList.add('btn-loading');
             return originalText;
+        }
+
+        function hideLoading(button, originalText) {
+            button.innerHTML = originalText;
+            button.disabled = false;
+            button.classList.remove('btn-loading');
+            button.style.minWidth = '';
         }
 
         function hideLoading(button, originalText) {
