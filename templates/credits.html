@@ -528,6 +528,14 @@
     text-decoration: none;
     position: relative;
     overflow: hidden;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .btn-purchase:disabled {
@@ -1053,21 +1061,25 @@ function showPaymentModal(data) {
                 <i class="fas fa-list-ol"></i> Payment Instructions
             </h4>
             
-            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 16px; border: 2px solid var(--accent-yellow);">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                    <span style="color: var(--text-secondary); font-weight: 600;">Payment Number:</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span id="payment-number-display" style="font-family: monospace; font-size: 16px; font-weight: 700; color: var(--accent-yellow);">${data.payment_number}</span>
-                        <button onclick="copyPaymentNumber('${data.payment_number}')" style="background: var(--accent-yellow); color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+            <div style="background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid var(--accent-yellow);">
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: var(--text-secondary); font-weight: 600; font-size: 14px;">Payment Number:</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; background: var(--bg-primary); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <span id="payment-number-display" style="flex: 1; font-family: monospace; font-size: 16px; font-weight: 700; color: var(--accent-yellow);">${data.payment_number}</span>
+                        <button onclick="copyPaymentNumber('${data.payment_number}')" style="background: var(--accent-yellow); color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; -webkit-tap-highlight-color: transparent;">
                             <i class="fas fa-copy"></i> Copy
                         </button>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <span style="color: var(--text-secondary); font-weight: 600;">Amount:</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span id="payment-amount-display" style="font-family: monospace; font-size: 16px; font-weight: 700; color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</span>
-                        <button onclick="copyAmount('${data.price_mmk}')" style="background: var(--success-green); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: var(--text-secondary); font-weight: 600; font-size: 14px;">Amount:</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; background: var(--bg-primary); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <span id="payment-amount-display" style="flex: 1; font-family: monospace; font-size: 16px; font-weight: 700; color: var(--success-green);">${data.price_mmk.toLocaleString()} MMK</span>
+                        <button onclick="copyAmount('${data.price_mmk}')" style="background: var(--success-green); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; -webkit-tap-highlight-color: transparent;">
                             <i class="fas fa-copy"></i> Copy
                         </button>
                     </div>
